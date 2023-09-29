@@ -1,0 +1,20 @@
+[
+ {
+  "S\/N": 1,
+  "DATE": "March 1, 2023 at 12:09 AM",
+  "DESCRIPTION": "Fees charged on total of 1 out of 100000(s) that matched from your SSBS Sell order. Order tid is 139179936121",
+  "DEBIT": 7.23,
+  "ORDER": "SELL",
+  "COMMODITY": "SSBS",
+  "BALANCE": 81019528.28
+ },
+ {
+  "S\/N": 2,
+  "DATE": "March 1, 2023 at 12:09 AM",
+  "DESCRIPTION": "A total of 1 out of 100000(s) have matched from your SSBS Sell order. Order tid is 139179936121",
+  "CREDIT": 345,
+  "ORDER": "SELL",
+  "COMMODITY": "SSBS",
+  "BALANCE": 81019535.51
+ }
+]
