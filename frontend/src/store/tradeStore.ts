@@ -27,7 +27,7 @@ export interface TradeType {
 }
 
 
-const baseURL: string = 'http://localhost:7001/api/trades';
+const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/trades';
 
 export const tradeStore = writable([]);
 

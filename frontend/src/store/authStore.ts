@@ -11,7 +11,14 @@ type AuthStateType = {
 	success: boolean;
 };
 
-axios.defaults.baseURL = 'http://localhost:7001/api/users';
+// const baseURL = '';
+const instance = axios.create({
+	baseURL: 'https://trade-accounting-demo.onrender.com/api/users', // Replace with your API's base URL
+	headers: {
+		'Content-Type': 'application/json', // Adjust content type as needed
+		'Access-Control-Allow-Origin': 'http://127.0.0.1:5173'
+	},
+});
 
 const userStore = storable<UserResponse | null>('user', null);
 
@@ -34,7 +41,7 @@ const createAuthStore = () => {
 			try {
 				setLoading(true);
 
-				const { data } = await axios.post('/login', loginData);
+				const { data } = await instance.post(`/login`, loginData);
 				console.log(data);
 
 				userStore.set(data.data);
@@ -60,7 +67,7 @@ const createAuthStore = () => {
 			try {
 				setLoading(true);
 
-				const { data } = await axios.post('/create', registerData);
+				const { data } = await instance.post(`/create`, registerData);
 
 				userStore.set(data.data);
 

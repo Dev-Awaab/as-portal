@@ -4,7 +4,7 @@ import { storable } from './storable';
 import Result from 'postcss/lib/result';
 
 
-const baseURL: string = 'http://localhost:7001/api/performace';
+const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/performace';
 
 export const performaceStore = writable([]);
 
