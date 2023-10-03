@@ -34,7 +34,7 @@
 	}
 </script>
 
-<Navbar let:hidden let:toggle class="shadow ">
+<Navbar let:hidden let:toggle class="shadow">
 	<NavBrand href="/">
 		<img src="/logo.png" class="mr-3 h-20" alt="Flowbite Logo" />
 		<!-- <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white text-orange-500">Marble</span> -->
@@ -49,7 +49,7 @@
 				</Secondary>
 				<Button on:click={logout} class="bg-red-500 outline-none focus:ring-0">Logout</Button>
 			</div>
-
+			<!-- 
 			{#if !hidden}
 				<main {hidden} class="h-screen flex">
 					<Sidebar id="default-sidebar" class="h-screen">
@@ -87,7 +87,7 @@
 						</SidebarWrapper>
 					</Sidebar>
 				</main>
-			{/if}
+			{/if} -->
 		{:else}
 			<NavLi
 				href="/sign-in"

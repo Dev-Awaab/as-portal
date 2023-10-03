@@ -18,9 +18,9 @@
       <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">{title}</h3>
        
       <slot></slot>
-      <div class="mt-6 flex justify-end">
+      <!-- <div class="mt-6 flex justify-end">
         <button on:click={closeModal} class="text-primary-500 hover:underline">Close</button>
-      </div>
+      </div> -->
     </div>
   </Modal>
 {/if}

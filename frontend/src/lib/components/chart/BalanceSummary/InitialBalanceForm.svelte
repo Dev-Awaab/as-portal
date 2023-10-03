@@ -12,7 +12,16 @@
 	} from '../../../../store';
 
 	import CustomModal from '../../common/CustomModal.svelte';
-	import { Button } from 'flowbite-svelte';
+	import {
+		Button,
+		Heading,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell
+	} from 'flowbite-svelte';
 
 	onMount(async () => {
 		HandleData();
@@ -88,23 +97,35 @@
 		showModalData = true;
 	}
 
-	// console.log(showModalData);
+	function formatNumber(data: number) {
+		return data.toLocaleString('en-Ng', {
+			style: 'currency',
+			currency: 'NGN'
+		});
+	}
 </script>
 
-<main class="p-10 flex flex-col">
-	<Button on:click={openModal} class="bg-orange-500 text-white w-40">Enter New Capital</Button>
+<main class="md:p-10 p-5 flex flex-col">
+	<Button on:click={openModal} class="bg-orange-500 text-white w-40 mb-5 ">Enter New Capital</Button
+	>
 
 	<CustomModal
 		bind:open={modal}
 		onClose={closeModal}
 		title="Enter The Current Year Starting Capital"
 	>
-		<div>
-			<form name="uploadForm" class="flex w-full mb-3" on:submit={HandleFormSubmit}>
-				<div class="relative bg-white w-full">
+		<div class="py-10">
+			<form
+				name="uploadForm"
+				class="flex w-full mb-3 flex-col justify-center items-center space-y-5"
+				on:submit={HandleFormSubmit}
+			>
+				<div class="w-full">
 					<span class="block mb-3 font-bold">Enter Year a File</span>
 					<input id="yearInput" type="text" class="w-full" bind:value={formData.year} required />
+				</div>
 
+				<div class="w-full">
 					<span class="block mb-3 font-bold">Enter Balance</span>
 					<input
 						id="balanceInput"
@@ -114,9 +135,9 @@
 						bind:value={formData.initalCapital}
 						required
 					/>
-
-					<Button type="submit" class="m-5 bg-blue-500 text-white w-40">Submit</Button>
 				</div>
+
+				<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 			</form>
 		</div>
 	</CustomModal>
@@ -127,7 +148,36 @@
 		</div>
 	{/if}
 
-	{#if rows.length !== 0}
+	<div class="flex items-center py-5 px-3">
+		<Heading tag="h5">Initial Capital</Heading>
+	</div>
+
+	<Table color="default" hoverable={true}>
+		<TableHead defaultRow={false}>
+			<tr>
+				{#each columns as column}
+					<TableHeadCell>{column.title}</TableHeadCell>
+				{/each}
+			</tr>
+		</TableHead>
+		<TableBody class="divide-y">
+			{#each rows as row}
+				<TableBodyRow>
+					{#each columns as column}
+						<TableBodyCell class="border border-gray-300 p-5">
+							{#if column.key === 'capital'}
+								{formatNumber(column.value(row))}
+							{:else}
+								{column.value(row)}
+							{/if}
+						</TableBodyCell>
+					{/each}
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
+
+	<!-- {#if rows.length !== 0}
 		{#key rows}
 			<div class="overflow-x-auto">
 				<table class="min-w-full border-collapse border border-gray-300">
@@ -150,5 +200,5 @@
 				</table>
 			</div>
 		{/key}
-	{/if}
+	{/if} -->
 </main>
