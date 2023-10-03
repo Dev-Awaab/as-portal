@@ -9,19 +9,6 @@
 	import { page } from '$app/stores';
 </script>
 
-<AuthGuard>
-	<main class="w- h-auto">
-		<div class=" flex">
-			<!-- Sidebar -->
-			<div class="file:">
-				<Sidebar />
-			</div>
 
-			<!-- Main Content -->
-			<div class="w-screen px-2">
-				<BrokrageIncome />
-			</div>
-			<!-- </div> -->
-		</div>
-	</main>
-</AuthGuard>
+	<BrokrageIncome />
+

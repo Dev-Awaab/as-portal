@@ -159,7 +159,7 @@
 
 	{#if ChartDataSet.length !== 0}
 		{#key ChartDataSet}
-			<div class="flex flex-wrap justify-center">
+			<div class="flex flex-wrap justify-center h">
 				<!-- first row -->
 				<div class="w-full">
 					<!-- First Chart (Assuming it's BarChart) -->
