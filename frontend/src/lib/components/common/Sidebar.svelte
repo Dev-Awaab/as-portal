@@ -29,11 +29,13 @@
 </script>
 
 <Navbar let:hidden let:toggle>
+	<!-- <NavHamburger on:click={toggle} /> -->
+
 	<NavUl {hidden}>
 		<main class="h-screen flex">
 			<Sidebar id="default-sidebar" class="h-screen">
-				<SidebarWrapper class=" h-screen">
-					<SidebarGroup class=" space-y-10">
+				<SidebarWrapper class="h-screen">
+					<SidebarGroup class="space-y-10">
 						<SidebarItem label="Dashboard" href="/" class="py-5 px-3">
 							<svelte:fragment slot="icon">
 								<ChartPieSolid
