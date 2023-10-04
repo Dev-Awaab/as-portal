@@ -10,15 +10,26 @@
 
 	import * as XLSX from 'xlsx/xlsx.mjs';
 	import { uploadTradesStore, tradeStore } from '../../../store';
+	import { uploadTransactionStore, transactionStore } from '../../../store';
 
 	export let ChartDataSet: any[] = [];
+	let csvData: any = [];
 	let DemoChart: Chart;
 	let PieChartData: any[] = [];
 	let commodities: string[] = ['SSBS', 'SPRL', 'SCSN', 'SMAZ', 'SCSN'];
 	let fileName: string;
 	import SvelteTable from 'svelte-table';
 	import CustomModal from '../common/CustomModal.svelte';
-	import { Button } from 'flowbite-svelte';
+	import {
+		Button,
+		Heading,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell
+	} from 'flowbite-svelte';
 
 	onMount(async () => {
 		HandleData();
@@ -84,7 +95,8 @@
 				workbook.SheetNames.forEach((sheet: string) => {
 					let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
 
-					uploadTradesStore.upload(rowObject);
+					csvData = [...rowObject];
+
 					rowObject = HandleData();
 
 					console.log(rowObject);
@@ -192,6 +204,14 @@
 		showModalData = true;
 	}
 
+	function HandleFormSubmit(value: any) {
+		console.log('Form data:', formData);
+
+		uploadTransactionStore.upload(csvData, formData);
+
+		modal = false;
+	}
+
 	import { Line } from 'svelte-chartjs';
 
 	import {
@@ -254,6 +274,11 @@
 			}
 		]
 	};
+
+	let formData = {
+		securities_balance: 0,
+		securities_inLien: 0
+	};
 </script>
 
 <main class="p-10 flex flex-col">
@@ -261,22 +286,49 @@
 
 	<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
 		<div>
-			<form name="uploadForm" class="flex w-full mb-3">
+			<form name="uploadForm" class="flex w-full mb-3" on:submit={HandleFormSubmit}>
 				<div class="relative bg-white w-full">
-					<span class="block mb-3 font-bold">Upload a File</span>
-					<input
-						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-						id="uploadInput"
-						use:HandleFile
-						type="file"
-						class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-					/>
-					<label
-						for="uploadInput"
-						class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
-					>
-						<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
-					</label>
+					<div class="">
+						<span class="font-bold">Upload a File</span>
+						<input
+							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+							id="uploadInput"
+							type="file"
+							use:HandleFile
+							class="opacity-0 cursor-pointer"
+						/>
+						<label
+							for="uploadInput"
+							class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
+						>
+							<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
+						</label>
+					</div>
+
+					<div class="w-full">
+						<span class="block mb-3 font-bold">Enter Balance</span>
+						<input
+							id="yearInput"
+							type="text"
+							class="w-full"
+							bind:value={formData.securities_balance}
+							required
+						/>
+					</div>
+
+					<div class="w-full">
+						<span class="block mb-3 font-bold">Enter InLien</span>
+						<input
+							id="balanceInput"
+							type="text"
+							class="w-full"
+							style="margin-top: 2px;"
+							bind:value={formData.securities_inLien}
+							required
+						/>
+					</div>
+
+					<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 				</div>
 			</form>
 		</div>

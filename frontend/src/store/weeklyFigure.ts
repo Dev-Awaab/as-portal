@@ -12,13 +12,16 @@ type TradestateType = {
 };
 
 // const baseURL = '';
-const instance = axios.create({
-	baseURL: 'https://trade-accounting-demo.onrender.com/api/weeklyfigures', // Replace with your API's base URL
-	headers: {
-		'Content-Type': 'application/json', // Adjust content type as needed
-		'Access-Control-Allow-Origin': 'http://127.0.0.1:5173'
-	}
-});
+// const instance = axios.create({
+// 	baseURL: 'https://trade-accounting-demo.onrender.com/api/weeklyfigures', // Replace with your API's base URL
+// 	headers: {
+// 		'Content-Type': 'application/json', // Adjust content type as needed
+// 		'Access-Control-Allow-Origin': 'http://127.0.0.1:5173'
+// 	}
+// });
+
+const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
+//"http://127.0.0.1:7001/api/weeklyfigures";
 
 const userStore = storable<UserResponse | null>('user', null);
 
@@ -41,7 +44,7 @@ const createTradeStore = () => {
 			try {
 				setLoading(true);
 
-				const res = await instance.get(`/retrive`);
+				const res = await axios.get(`${baseURL}/retrive`);
 
 				set({
 					trades: res.data.data.data,
