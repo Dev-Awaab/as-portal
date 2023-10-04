@@ -23,47 +23,25 @@ type TradestateType = {
 const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
 //"http://127.0.0.1:7001/api/weeklyfigures";
 
-const userStore = storable<UserResponse | null>('user', null);
+export const weeklyFigStore = writable([]);
 
-const createTradeStore = () => {
-	const { subscribe, set, update } = writable<TradestateType>({
-		trades: null,
-		loading: false,
-		message: null,
-		error: false,
-		success: false
-	});
-
-	const setLoading = (isLoading: boolean) => {
-		update((s: TradestateType) => ({ ...s, loading: isLoading }));
-	};
+const UploadeWeeeklyFigStore = () => {
+	// transactionStore.subscribe(($transactionStore) => $transactionStore);
 
 	return {
-		subscribe,
-		getTrades: async () => {
+		get: async () => {
 			try {
-				setLoading(true);
+				const { data } = await axios.get(`${baseURL}/retrive`);
+				// console.log(data);
 
-				const res = await axios.get(`${baseURL}/retrive`);
+				weeklyFigStore.set(data.data.data);
 
-				set({
-					trades: res.data.data.data,
-					loading: false,
-					error: false,
-					message: null,
-					success: true
-				});
 			} catch (error: any) {
-				set({
-					trades: null,
-					loading: false,
-					error: true,
-					message: error.response.data.error,
-					success: false
-				});
+				weeklyFigStore.set([]);
 			}
-		}
-	};
+		},
+	}
 };
 
-export const useTradeStore = createTradeStore();
+
+export const uploadeWeeeklyFigStore = UploadeWeeeklyFigStore();

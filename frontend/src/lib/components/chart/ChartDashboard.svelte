@@ -11,6 +11,7 @@
 	import * as XLSX from 'xlsx/xlsx.mjs';
 	import { uploadTradesStore, tradeStore } from '../../../store';
 	import { uploadTransactionStore, transactionStore } from '../../../store';
+	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../../store';
 
 	export let ChartDataSet: any[] = [];
 	let csvData: any = [];
@@ -18,6 +19,12 @@
 	let PieChartData: any[] = [];
 	let commodities: string[] = ['SSBS', 'SPRL', 'SCSN', 'SMAZ', 'SCSN'];
 	let fileName: string;
+	let loading = false;
+
+	let lineChartX: any = [];
+	let lineChartY: any = [];
+	let weekFigs: any;
+
 	import SvelteTable from 'svelte-table';
 	import CustomModal from '../common/CustomModal.svelte';
 	import {
@@ -31,18 +38,37 @@
 		TableHeadCell
 	} from 'flowbite-svelte';
 
+	import {
+		Chart as ChartJS,
+		Title,
+		Tooltip,
+		Legend,
+		LineElement,
+		LinearScale,
+		PointElement,
+		CategoryScale
+	} from 'chart.js';
+
+	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
+
 	onMount(async () => {
 		HandleData();
 	});
 
 	async function HandleData() {
 		await uploadTradesStore.getAll();
+		await uploadeWeeeklyFigStore.get();
+
 		let rowObject: any = 0;
 		tradeStore.subscribe(($tradeStore) => (rowObject = $tradeStore));
-		// console.log('handling data in chart dashboard');
-		// console.log(rowObject);
+
+		weeklyFigStore.subscribe(($store) => (weekFigs = $store));
+
+		weekFigs.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
+
+		// console.log('_________', weekFigs);
+
 		rowObject.sort((a: any, b: any) => a.DATE - b.DATE);
-		// tradeStore.set({ ...rowObject });
 
 		for (let i = 0; i < rowObject.length; i += 1) {
 			const serialDate: any = rowObject[i].DATE;
@@ -61,16 +87,16 @@
 			};
 		}
 
-		// console.log(rowObject);
 		rows = [...rowObject];
 
-		// DemoChart.data.datasets[0].data = ChartDataSet;
-		// DemoChart.update();
+		weekFigs.forEach((element: any) => {
+			lineChartY.push(String(moment(element.DATE).format('D, MMM, YYY')));
+			lineChartX.push(element.CASH_AVAILABLE);
+		});
 
-		if (ChartDataSet.length !== 0) {
-			showModalData = true;
-		}
-		console.log(showModalData);
+		// if (weekFigs.length !== 0 ) {
+		// 	showModalData = true;
+		// }
 
 		return rowObject;
 	}
@@ -104,6 +130,9 @@
 					// DemoChart.data.datasets[0].data = ChartDataSet;
 					// DemoChart.update();
 					rows = [...rowObject];
+					if (ChartDataSet.length !== 0) {
+						loading = false;
+					}
 				});
 			};
 		}
@@ -207,6 +236,8 @@
 	function HandleFormSubmit(value: any) {
 		console.log('Form data:', formData);
 
+		loading = true;
+
 		uploadTransactionStore.upload(csvData, formData);
 
 		modal = false;
@@ -214,21 +245,10 @@
 
 	import { Line } from 'svelte-chartjs';
 
-	import {
-		Chart as ChartJS,
-		Title,
-		Tooltip,
-		Legend,
-		LineElement,
-		LinearScale,
-		PointElement,
-		CategoryScale
-	} from 'chart.js';
-
 	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
 
-	const lineData = {
-		labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+	var data = {
+		labels: lineChartY,
 		datasets: [
 			{
 				label: 'My First dataset',
@@ -240,37 +260,16 @@
 				borderDash: [],
 				borderDashOffset: 0.0,
 				borderJoinStyle: 'miter',
-				pointBorderColor: 'rgb(205, 130,1 58)',
+				pointBorderColor: 'rgb(105, 30, 208)',
 				pointBackgroundColor: 'rgb(255, 255, 255)',
-				pointBorderWidth: 10,
-				pointHoverRadius: 5,
-				pointHoverBackgroundColor: 'rgb(0, 0, 0)',
+				pointBorderWidth: 4,
+				pointHoverRadius: 2,
+				pointHoverBackgroundColor: 'rgb(20, 50, 30)',
 				pointHoverBorderColor: 'rgba(220, 220, 220,1)',
 				pointHoverBorderWidth: 2,
 				pointRadius: 1,
 				pointHitRadius: 10,
-				data: [65, 59, 80, 81, 56, 55, 40]
-			},
-			{
-				label: 'My Second dataset',
-				fill: true,
-				lineTension: 0.3,
-				backgroundColor: 'rgba(184, 185, 210, .3)',
-				borderColor: 'rgb(35, 26, 136)',
-				borderCapStyle: 'butt',
-				borderDash: [],
-				borderDashOffset: 0.0,
-				borderJoinStyle: 'miter',
-				pointBorderColor: 'rgb(35, 26, 136)',
-				pointBackgroundColor: 'rgb(255, 255, 255)',
-				pointBorderWidth: 10,
-				pointHoverRadius: 5,
-				pointHoverBackgroundColor: 'rgb(0, 0, 0)',
-				pointHoverBorderColor: 'rgba(220, 220, 220, 1)',
-				pointHoverBorderWidth: 2,
-				pointRadius: 1,
-				pointHitRadius: 10,
-				data: [28, 48, 40, 19, 86, 27, 90]
+				data: lineChartX
 			}
 		]
 	};
@@ -341,10 +340,22 @@
 		</div>
 	{/if}
 
-	{#if ChartDataSet.length !== 0 || showModalData}
+	{#if loading}
+		<div
+			style="margin: auto;"
+			class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+			role="status"
+		>
+			<span
+				class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+				>Loading...</span
+			>
+		</div>
+	{:else if ChartDataSet.length !== 0 || showModalData}
 		{#if true}
 			{#key ChartDataSet}
 				<div class="flex flex-wrap justify-center">
+					<Line {data} options={{ responsive: true }} />
 					<!-- first row -->
 					<div class="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 mb-5">
 						<!-- First Chart (Assuming it's BarChart) -->
@@ -401,6 +412,4 @@
   </div> -->
 		{/if}
 	{/if}
-
-	<Line {lineData} options={{ responsive: true }} />
 </main>
