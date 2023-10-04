@@ -142,6 +142,7 @@
 	} from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
+	import moment from 'moment';
 
 	let data: any = [];
 
@@ -152,6 +153,7 @@
 			);
 
 			data = res.data.data.data;
+			data = data.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}
@@ -205,9 +207,9 @@
 			</tr>
 		</TableHead>
 		<TableBody class="divide-y">
-			{#each data as item, index (item.CASH_AVAILABLE)}
+			{#each data as item, index (item._id)}
 				<TableBodyRow key={index}>
-					<TableBodyCell>{num(item.DATE)}</TableBodyCell>
+					<TableBodyCell>{moment(num(item.DATE)).format('D, MMM, YYYY')}</TableBodyCell>
 					<TableBodyCell>{num(item.CASH_AVAILABLE)}</TableBodyCell>
 					<TableBodyCell>{num(item.CASH_INLIEN)}</TableBodyCell>
 					<TableBodyCell>{num(item.SECURITIES_AVAILABLE)}</TableBodyCell>

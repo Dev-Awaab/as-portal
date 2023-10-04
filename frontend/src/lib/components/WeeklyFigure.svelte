@@ -117,6 +117,7 @@
 	import { onMount } from 'svelte';
 	import axios from 'axios';
 	import moment from 'moment';
+	import { elements } from 'chart.js';
 
 	let data: any = [];
 
@@ -139,12 +140,21 @@
 	onMount(async () => {
 		try {
 			const res = await axios.get(
-				// 'http://127.0.0.1:7001/api/weeklyfigures/retrive'
-				'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
+				'http://127.0.0.1:7001/api/weeklyfigures/retrive'
+				// 'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
 			);
 
 			data = res.data.data.data;
-			console.log('=========', data);
+
+			// data.forEach(
+			// 	(elements: any) => (elements.DATE = moment(elements.DATE).format('DD, MMM, YYYY'))
+			// );
+
+			let sorted = data.sort(
+				(a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime()
+			);
+			sorted.forEach((elements: any) => console.log(elements.DATE));
+			console.log('=========', sorted);
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}
@@ -174,7 +184,7 @@
 		<TableBody class="divide-y">
 			{#each data as item, index (item._id)}
 				<TableBodyRow key={index}>
-					<TableBodyCell>{moment(item.DATE).format('MMM, YYYY')}</TableBodyCell>
+					<TableBodyCell>{moment(item.DATE).format('D, MMM, YYYY')}</TableBodyCell>
 					<TableBodyCell>{num(item.BUYORDER)}</TableBodyCell>
 					<TableBodyCell>{num(item.SELLORDER)}</TableBodyCell>
 				</TableBodyRow>
