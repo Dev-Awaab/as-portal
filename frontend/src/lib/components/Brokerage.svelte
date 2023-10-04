@@ -1,54 +1,88 @@
 <script lang="ts">
-    import {
-      Heading,
-      Table,
-      TableBody,
-      TableBodyCell,
-      TableBodyRow,
-      TableHead,
-      TableHeadCell
-    } from 'flowbite-svelte';
-  
-    // Sample data for Brokerage Fee Earned
-    const data = [
-      { month: 'Nov-22', amount: '₦ 2,376,779.08' },
-      { month: 'Dec-22', amount: '₦ 2,351,498.82' },
-      { month: 'Jan-23', amount: '₦ 1,150,778.18' },
-      { month: 'Feb-23', amount: '₦ 3,680,033.67' },
-      { month: 'Mar-23', amount: '₦ 2,179,627.64' },
-      { month: 'Apr-23', amount: '₦ 1,104,471.00' },
-      { month: 'May-23', amount: '₦ 908,946.45' },
-      { month: 'Jun-23', amount: '₦ 295,982.67' }
-    ];
-  
-    // Calculate the total sum of amounts
-    const total = data.reduce((acc, item) => acc + parseInt(item.amount.replace(/\D/g, '')), 0);
+	import {
+		Heading,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell
+	} from 'flowbite-svelte';
+	import axios from 'axios';
+	import { onMount } from 'svelte';
+	import moment from 'moment';
 
-  </script>
-  
-  <div>
-    <div class="flex items-center py-5 px-3">
-      <Heading tag="h5">Brokerage Fee Earned</Heading>
-    </div>
-    <Table class="w-full">
-      <TableHead defaultRow={false} class="w-full">
-        <tr class="w-full">
-          <TableHeadCell>Month</TableHeadCell>
-          <TableHeadCell>Amount</TableHeadCell>
-        </tr>
-      </TableHead>
-      <TableBody class="divide-y">
-        {#each data as item (item.month)}
-          <TableBodyRow>
-            <TableBodyCell>{item.month}</TableBodyCell>
-            <TableBodyCell>{item.amount}</TableBodyCell>
-          </TableBodyRow>
-        {/each}
-        <TableBodyRow>
-          <TableBodyCell>Total</TableBodyCell>
-          <TableBodyCell>₦ {total.toLocaleString('en-NG', { style: 'currency', currency: 'NGN' })}</TableBodyCell>
-        </TableBodyRow>
-      </TableBody>
-    </Table>
-  </div>
-  
+	// Sample data for Brokerage Fee Earned
+	let data = [
+		{ month: 'Nov-22', amount: 2376779 },
+		{ month: 'Dec-22', amount: 2351498 },
+		{ month: 'Jan-23', amount: 1150778 },
+		{ month: 'Feb-23', amount: 3680033 },
+		{ month: 'Mar-23', amount: 2179627 },
+		{ month: 'Apr-23', amount: 1104471 },
+		{ month: 'May-23', amount: 908946 },
+		{ month: 'Jun-23', amount: 295982 }
+	];
+
+	let total: number = 0;
+
+	$: {
+		// Calculate the total sum of amounts
+		data.forEach((item) => (total += item.amount));
+	}
+
+	onMount(async () => {
+		try {
+			const res = await axios.get(
+				// 'http://127.0.0.1:7001/api/transactions/brokerageIncome'
+				'https://trade-accounting-demo.onrender.com/api/transactions/brokerageIncome'
+			);
+
+			let Ldata = res.data.data.data;
+
+			let sorted = Ldata.sort(
+				(a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime()
+			);
+
+			data = sorted;
+			total = 0;
+
+			console.log('________', sorted);
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	});
+
+	const num = (data: number) => {
+		return data.toLocaleString('en-NG', {
+			style: 'currency',
+			currency: 'NGN'
+		});
+	};
+</script>
+
+<div>
+	<div class="flex items-center py-5 px-3">
+		<Heading tag="h5">Brokerage Fee Earned</Heading>
+	</div>
+	<Table class="w-full">
+		<TableHead defaultRow={false} class="w-full">
+			<tr class="w-full">
+				<TableHeadCell>Month</TableHeadCell>
+				<TableHeadCell>Amount</TableHeadCell>
+			</tr>
+		</TableHead>
+		<TableBody class="divide-y">
+			{#each data as item (item.month)}
+				<TableBodyRow>
+					<TableBodyCell>{moment(item.month).format('DD, MMM, YYYY')}</TableBodyCell>
+					<TableBodyCell>{num(item.amount)}</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+			<TableBodyRow>
+				<TableBodyCell>Total</TableBodyCell>
+				<TableBodyCell>{num(total)}</TableBodyCell>
+			</TableBodyRow>
+		</TableBody>
+	</Table>
+</div>

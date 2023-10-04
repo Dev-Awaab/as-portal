@@ -43,32 +43,41 @@
 
 	let formData = {
 		year: 2022,
-		initalCapital: 100
+		initalCapital: 100,
+		performaceTarget: 100
 	};
 	function HandleFormSubmit(value: any) {
 		console.log('Form data:', formData);
 		initalCapitalStore.send(formData);
 
-		rows.push({ year: formData.year, initalCapital: formData.initalCapital });
+		rows.push({
+			year: formData.year,
+			initalCapital: formData.initalCapital,
+			performaceTarget: formData.performaceTarget
+		});
 		modal = false;
 	}
 
 	export let rows: any[] = [
 		{
 			year: 2020,
-			initalCapital: 31019528.28
+			initalCapital: 31019528.28,
+			performanceTarget: 4000000
 		},
 		{
 			year: 2021,
-			initalCapital: 41019528.28
+			initalCapital: 41019528.28,
+			performanceTarget: 4000000
 		},
 		{
 			year: 2022,
-			initalCapital: 51019528.28
+			initalCapital: 51019528.28,
+			performanceTarget: 4000000
 		},
 		{
 			year: 2023,
-			initalCapital: 81019528.28
+			initalCapital: 81019528.28,
+			performanceTarget: 4000000
 		}
 	];
 	let columns = [
@@ -82,6 +91,11 @@
 			key: 'capital',
 			title: 'CAPITAL BALANCE',
 			value: (v: any) => v.initalCapital
+		},
+		{
+			key: 'target',
+			title: 'Perfomace Target',
+			value: (v: any) => v.performanceTarget
 		}
 	];
 
@@ -98,6 +112,14 @@
 	}
 
 	function formatNumber(data: number) {
+		return data.toLocaleString('en-Ng', {
+			style: 'currency',
+			currency: 'NGN'
+		});
+	}
+	function formatPerfromace(data: number) {
+		if (!data) data = 0;
+
 		return data.toLocaleString('en-Ng', {
 			style: 'currency',
 			currency: 'NGN'
@@ -137,6 +159,18 @@
 					/>
 				</div>
 
+				<div class="w-full">
+					<span class="block mb-3 font-bold">Enter Performace Target </span>
+					<input
+						id="balanceInput"
+						type="text"
+						class="w-full"
+						style="margin-top: 2px;"
+						bind:value={formData.performaceTarget}
+						required
+					/>
+				</div>
+
 				<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 			</form>
 		</div>
@@ -167,6 +201,8 @@
 						<TableBodyCell class="border border-gray-300 p-5">
 							{#if column.key === 'capital'}
 								{formatNumber(column.value(row))}
+							{:else if column.key === 'target'}
+								{formatPerfromace(column.value(row))}
 							{:else}
 								{column.value(row)}
 							{/if}

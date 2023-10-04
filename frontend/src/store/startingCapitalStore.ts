@@ -4,6 +4,7 @@ import { storable } from './storable';
 import Result from 'postcss/lib/result';
 
 
+// const baseURL: string = "http://127.0.0.1:7001/api/startingcapital"
 const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/startingcapital';
 
 export const capitalStore = writable([]);
@@ -23,7 +24,7 @@ const StartingCapitalStore = () => {
                 capitalStore.subscribe(async ($capitalStore) => { store = $capitalStore });
 
                 // console.log("-------", store)
-                // console.log('++++++++++', formData)
+                console.log('++++++++++', formData)
 
                 const { data } = await axios.post(`${baseURL}/`, formData);
 
