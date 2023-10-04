@@ -23,8 +23,7 @@ const StartingCapitalStore = () => {
                 let store;
                 capitalStore.subscribe(async ($capitalStore) => { store = $capitalStore });
 
-                // console.log("-------", store)
-                console.log('++++++++++', formData)
+
 
                 const { data } = await axios.post(`${baseURL}/`, formData);
 

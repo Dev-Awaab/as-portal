@@ -11,6 +11,7 @@
 	import axios from 'axios';
 	import { onMount } from 'svelte';
 	import moment from 'moment';
+	import Spinner from './Spinner.svelte';
 
 	// Sample data for Brokerage Fee Earned
 	let data = [
@@ -24,6 +25,7 @@
 		{ month: 'Jun-23', amount: 295982 }
 	];
 
+	let loading = false;
 	let total: number = 0;
 
 	$: {
@@ -33,6 +35,7 @@
 
 	onMount(async () => {
 		try {
+			loading = true;
 			const res = await axios.get(
 				// 'http://127.0.0.1:7001/api/transactions/brokerageIncome'
 				'https://trade-accounting-demo.onrender.com/api/transactions/brokerageIncome'
@@ -46,10 +49,10 @@
 
 			data = sorted;
 			total = 0;
-
-			console.log('________', sorted);
 		} catch (error) {
 			console.error('Error fetching data:', error);
+		} finally {
+			loading = false;
 		}
 	});
 
@@ -61,28 +64,32 @@
 	};
 </script>
 
-<div>
-	<div class="flex items-center py-5 px-3">
-		<Heading tag="h5">Brokerage Fee Earned</Heading>
-	</div>
-	<Table class="w-full">
-		<TableHead defaultRow={false} class="w-full">
-			<tr class="w-full">
-				<TableHeadCell>Month</TableHeadCell>
-				<TableHeadCell>Amount</TableHeadCell>
-			</tr>
-		</TableHead>
-		<TableBody class="divide-y">
-			{#each data as item (item.month)}
+{#if loading}
+	<Spinner />
+{:else}
+	<div>
+		<div class="flex items-center py-5 px-3">
+			<Heading tag="h5">Brokerage Fee Earned</Heading>
+		</div>
+		<Table class="w-full">
+			<TableHead defaultRow={false} class="w-full">
+				<tr class="w-full">
+					<TableHeadCell>Month</TableHeadCell>
+					<TableHeadCell>Amount</TableHeadCell>
+				</tr>
+			</TableHead>
+			<TableBody>
+				{#each data as item (item.month)}
+					<TableBodyRow>
+						<TableBodyCell>{moment(item.month).format('DD, MMM, YYYY')}</TableBodyCell>
+						<TableBodyCell>{num(item.amount)}</TableBodyCell>
+					</TableBodyRow>
+				{/each}
 				<TableBodyRow>
-					<TableBodyCell>{moment(item.month).format('DD, MMM, YYYY')}</TableBodyCell>
-					<TableBodyCell>{num(item.amount)}</TableBodyCell>
+					<TableBodyCell>Total</TableBodyCell>
+					<TableBodyCell>{num(total)}</TableBodyCell>
 				</TableBodyRow>
-			{/each}
-			<TableBodyRow>
-				<TableBodyCell>Total</TableBodyCell>
-				<TableBodyCell>{num(total)}</TableBodyCell>
-			</TableBodyRow>
-		</TableBody>
-	</Table>
-</div>
+			</TableBody>
+		</Table>
+	</div>
+{/if}

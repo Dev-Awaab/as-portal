@@ -47,7 +47,7 @@
 					>Welcome,
 					<span class="uppercase"> {user?.name}</span>
 				</Secondary>
-				<Button on:click={logout} class="bg-red-500 outline-none focus:ring-0">Logout</Button>
+				<Button on:click={logout} class="bg-blue-700 outline-none focus:ring-0">Logout</Button>
 			</div>
 			<!-- 
 			{#if !hidden}

@@ -5,7 +5,14 @@
 </script>
 
 <main class="px-2 my-10 space-y-10">
-	<WeeklyFigure />
-	<PortfoliValues />
-	<Brokerage />
+	<div>
+		<WeeklyFigure />
+	</div>
+
+	<div>
+		<PortfoliValues />
+	</div>
+	<div>
+		<Brokerage />
+	</div>
 </main>

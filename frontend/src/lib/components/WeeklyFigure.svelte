@@ -118,12 +118,11 @@
 	import axios from 'axios';
 	import moment from 'moment';
 	import { elements } from 'chart.js';
+	import Spinner from './Spinner.svelte';
 
 	let data: any = [];
+	let loading = false;
 
-	console.log(data);
-
-	// Calculate the "Total" by summing "BUYORDER" and "SELLORDER"
 	let total: number = 0;
 
 	$: {
@@ -139,6 +138,7 @@
 
 	onMount(async () => {
 		try {
+			loading = true;
 			const res = await axios.get(
 				// 'http://127.0.0.1:7001/api/weeklyfigures/retrive'
 				'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
@@ -146,17 +146,13 @@
 
 			data = res.data.data.data;
 
-			// data.forEach(
-			// 	(elements: any) => (elements.DATE = moment(elements.DATE).format('DD, MMM, YYYY'))
-			// );
-
 			let sorted = data.sort(
 				(a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime()
 			);
-			sorted.forEach((elements: any) => console.log(elements.DATE));
-			console.log('=========', sorted);
 		} catch (error) {
 			console.error('Error fetching data:', error);
+		} finally {
+			loading = false;
 		}
 	});
 
@@ -168,27 +164,31 @@
 	};
 </script>
 
-<div>
-	<div class="flex items-center py-5 px-3">
-		<Heading tag="h5">Transaction Volume</Heading>
-		<Heading tag="h6">Total: {total}</Heading>
+{#if loading}
+	<Spinner />
+{:else}
+	<div>
+		<div class="flex items-center py-5 px-3">
+			<Heading tag="h5">Transaction Volume</Heading>
+			<Heading tag="h6">Total: {total}</Heading>
+		</div>
+		<Table>
+			<TableHead defaultRow={false}>
+				<tr>
+					<TableHeadCell>Date</TableHeadCell>
+					<TableHeadCell>Buy Order</TableHeadCell>
+					<TableHeadCell>Sell Order</TableHeadCell>
+				</tr>
+			</TableHead>
+			<TableBody>
+				{#each data as item, index (item._id)}
+					<TableBodyRow key={index}>
+						<TableBodyCell>{moment(item.DATE).format('D, MMM, YYYY')}</TableBodyCell>
+						<TableBodyCell>{num(item.BUYORDER)}</TableBodyCell>
+						<TableBodyCell>{num(item.SELLORDER)}</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
 	</div>
-	<Table>
-		<TableHead defaultRow={false}>
-			<tr>
-				<TableHeadCell>Date</TableHeadCell>
-				<TableHeadCell>Buy Order</TableHeadCell>
-				<TableHeadCell>Sell Order</TableHeadCell>
-			</tr>
-		</TableHead>
-		<TableBody class="divide-y">
-			{#each data as item, index (item._id)}
-				<TableBodyRow key={index}>
-					<TableBodyCell>{moment(item.DATE).format('D, MMM, YYYY')}</TableBodyCell>
-					<TableBodyCell>{num(item.BUYORDER)}</TableBodyCell>
-					<TableBodyCell>{num(item.SELLORDER)}</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
-</div>
+{/if}
