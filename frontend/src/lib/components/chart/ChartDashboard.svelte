@@ -277,7 +277,8 @@
 
 	let formData = {
 		securities_balance: 0,
-		securities_inLien: 0
+		securities_inLien: 0,
+		cash_inLine: 0
 	};
 </script>
 
@@ -286,50 +287,63 @@
 
 	<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
 		<div>
-			<form name="uploadForm" class="flex w-full mb-3" on:submit={HandleFormSubmit}>
-				<div class="relative bg-white w-full">
-					<div class="">
-						<span class="font-bold">Upload a File</span>
-						<input
-							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-							id="uploadInput"
-							type="file"
-							use:HandleFile
-							class="opacity-0 cursor-pointer"
-						/>
-						<label
-							for="uploadInput"
-							class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
-						>
-							<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
-						</label>
-					</div>
-
-					<div class="w-full">
-						<span class="block mb-3 font-bold">Enter Balance</span>
-						<input
-							id="yearInput"
-							type="text"
-							class="w-full"
-							bind:value={formData.securities_balance}
-							required
-						/>
-					</div>
-
-					<div class="w-full">
-						<span class="block mb-3 font-bold">Enter InLien</span>
-						<input
-							id="balanceInput"
-							type="text"
-							class="w-full"
-							style="margin-top: 2px;"
-							bind:value={formData.securities_inLien}
-							required
-						/>
-					</div>
-
-					<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
+			<form
+				name="uploadForm"
+				class="flex items-center flex-col space-y-5"
+				on:submit={HandleFormSubmit}
+			>
+				<div class="">
+					<span class="font-bold">Upload a File</span>
+					<input
+						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+						id="uploadInput"
+						type="file"
+						use:HandleFile
+						class="opacity-0 cursor-pointer"
+					/>
+					<label
+						for="uploadInput"
+						class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
+					>
+						<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
+					</label>
 				</div>
+
+				<div class="w-full">
+					<span class="block mb-3 font-bold">Security Balance</span>
+					<input
+						id="yearInput"
+						type="text"
+						class="w-full"
+						bind:value={formData.securities_balance}
+						required
+					/>
+				</div>
+
+				<div class="w-full">
+					<span class="block mb-3 font-bold">Security InLien</span>
+					<input
+						id="balanceInput"
+						type="text"
+						class="w-full"
+						style="margin-top: 2px;"
+						bind:value={formData.securities_inLien}
+						required
+					/>
+				</div>
+				<div class="w-full">
+					<span class="block mb-3 font-bold">Cash InLien</span>
+					<input
+						id="balanceInput"
+						type="text"
+						class="w-full"
+						style="margin-top: 2px;"
+						bind:value={formData.cash_inLine}
+						required
+					/>
+				</div>
+
+				<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 			</form>
 		</div>
 	</CustomModal>

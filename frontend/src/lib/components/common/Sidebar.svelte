@@ -48,7 +48,14 @@
 						/>
 					</svelte:fragment>
 				</SidebarItem>
-				<SidebarItem label="Portfolio Performace" href="/performace" class="py-5 px-3">
+				<SidebarItem label="Inventory" href="/inventory" class="py-5 px-3">
+					<svelte:fragment slot="icon">
+						<ChartPieSolid
+							class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+						/>
+					</svelte:fragment>
+				</SidebarItem>
+				<!-- <SidebarItem label="Portfolio Performace" href="/performace" class="py-5 px-3">
 					<svelte:fragment slot="icon">
 						<GridSolid
 							class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -68,7 +75,7 @@
 							class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
 						/>
 					</svelte:fragment>
-				</SidebarItem>
+				</SidebarItem> -->
 				<SidebarItem label="Weekly Figures" href="/weekly-figures" class="py-5 px-3">
 					<svelte:fragment slot="icon">
 						<CalendarWeekSolid
