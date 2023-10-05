@@ -1,10 +1,5 @@
 export let smazData = [
-	{
-		label: 'Inventory',
-		volume: '202,164',
-		marketPrice: '₦ 259.00',
-		value: '₦ 52,360,476.00'
-	},
+
 	{
 		label: 'Units Bought',
 		volume: '2,003,689',
@@ -26,12 +21,7 @@ export let smazData = [
 ];
 
 export let ssgmData = [
-	{
-		label: 'Inventory',
-		volume: '202,164',
-		marketPrice: '₦ 259.00',
-		value: '₦ 52,360,476.00'
-	},
+
 	{
 		label: 'Units Bought',
 		volume: '2,003,689',
@@ -53,12 +43,7 @@ export let ssgmData = [
 ];
 
 export let ssbsData = [
-	{
-		label: 'Inventory',
-		volume: '202,164',
-		marketPrice: '₦ 259.00',
-		value: '₦ 52,360,476.00'
-	},
+
 	{
 		label: 'Units Bought',
 		volume: '2,003,689',
@@ -80,12 +65,7 @@ export let ssbsData = [
 ];
 
 export let sprlData = [
-	{
-		label: 'Inventory',
-		volume: '202,164',
-		marketPrice: '₦ 259.00',
-		value: '₦ 52,360,476.00'
-	},
+
 	{
 		label: 'Units Bought',
 		volume: '2,003,689',
@@ -107,12 +87,7 @@ export let sprlData = [
 ];
 
 export let scsnData = [
-	{
-		label: 'Inventory',
-		volume: '202,164',
-		marketPrice: '₦ 259.00',
-		value: '₦ 52,360,476.00'
-	},
+
 	{
 		label: 'Units Bought',
 		volume: '2,003,689',

@@ -11,14 +11,7 @@ type TradestateType = {
 	success: boolean;
 };
 
-// const baseURL = '';
-// const instance = axios.create({
-// 	baseURL: 'https://trade-accounting-demo.onrender.com/api/weeklyfigures', // Replace with your API's base URL
-// 	headers: {
-// 		'Content-Type': 'application/json', // Adjust content type as needed
-// 		'Access-Control-Allow-Origin': 'http://127.0.0.1:5173'
-// 	}
-// });
+
 
 const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
 //"http://127.0.0.1:7001/api/weeklyfigures";

@@ -244,6 +244,7 @@
 	}
 
 	import { Line } from 'svelte-chartjs';
+	import { DownloadOutline, ShoppingCartSolid, UploadOutline } from 'flowbite-svelte-icons';
 
 	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
 
@@ -279,10 +280,37 @@
 		securities_inLien: 0,
 		cash_inLine: 0
 	};
+	async function downloadExcelFile(name: string) {
+		try {
+			const response = await fetch(`/static/${name}`); // Replace with the path to your Excel file
+			const blob = await response.blob();
+
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `${name}`; // Set the filename with .xlsx extension
+			a.click();
+			window.URL.revokeObjectURL(url);
+		} catch (error) {
+			console.error('Error downloading the Excel file:', error);
+		}
+	}
 </script>
 
 <main class="p-10 flex flex-col">
-	<Button on:click={openModal} class="bg-orange-500 text-white w-40">Upload Data</Button>
+	<div class="flex items-center space-x-6">
+		<Button on:click={openModal} class="bg-blue-500 w-40">
+			<UploadOutline class="w-3.5 h-3.5  mr-2" />
+			Upload Data</Button
+		>
+
+		<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.xlsx')}>
+			<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
+		</Button>
+		<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.xlsx')}>
+			<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
+		</Button>
+	</div>
 
 	<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
 		<div>
@@ -291,21 +319,23 @@
 				class="flex items-center flex-col space-y-5"
 				on:submit={HandleFormSubmit}
 			>
-				<div class="">
-					<span class="font-bold">Upload a File</span>
-					<input
-						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-						id="uploadInput"
-						type="file"
-						use:HandleFile
-						class="opacity-0 cursor-pointer"
-					/>
-					<label
-						for="uploadInput"
-						class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
-					>
-						<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
-					</label>
+				<div>
+					<div class="">
+						<span class="font-bold">Upload a File</span>
+						<input
+							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+							id="uploadInput"
+							type="file"
+							use:HandleFile
+							class="opacity-0 cursor-pointer"
+						/>
+						<label
+							for="uploadInput"
+							class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
+						>
+							<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
+						</label>
+					</div>
 				</div>
 
 				<div class="w-full">
@@ -418,12 +448,6 @@
 					</table>
 				</div>
 			{/key}
-
-			<!-- {:else}
-  <div class="text-center font-semibold text-gray-600">
-	<p>No data</p>
-	 <p>Upload a document to see the Chart</p>
-  </div> -->
 		{/if}
 	{/if}
 </main>
