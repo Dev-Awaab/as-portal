@@ -34,8 +34,7 @@
 		try {
 			loading = true;
 			const res = await axios.get(
-				'http://127.0.0.1:7001/api/weeklyfigures/retrive'
-				// 'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
+				'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
 			);
 
 			data = res.data.data.data;
@@ -56,6 +55,8 @@
 			currency: 'NGN'
 		});
 	};
+
+	console.log(data);
 </script>
 
 {#if loading}
