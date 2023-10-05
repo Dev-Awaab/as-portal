@@ -1,10 +1,12 @@
 import { writable } from 'svelte/store';
-import axios from 'axios';
+// import axios from 'axios';
 import { storable } from './storable';
 import Result from 'postcss/lib/result';
+import { serverInstance } from '../utils/baseUrl';
 
 
-const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/performace';
+// const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/performace';
+const baseURL: string = '/api/performace';
 
 export const performaceStore = writable([]);
 
@@ -48,7 +50,7 @@ const CreatePerformaceStore = () => {
                 console.log(formData)
 
                 if (filterList.length != 0) {
-                    const { data } = await axios.post(`${baseURL}/`, formData);
+                    const { data } = await serverInstance.post(`${baseURL}/`, formData);
 
                     performaceStore.set(data.data);
                 }
@@ -59,7 +61,7 @@ const CreatePerformaceStore = () => {
         },
         getPerformaceData: async () => {
             try {
-                const { data } = await axios.get(`${baseURL}/`);
+                const { data } = await serverInstance.get(`${baseURL}/`);
 
                 performaceStore.set(data.data.data);
 
