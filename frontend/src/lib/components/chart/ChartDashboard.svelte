@@ -309,18 +309,22 @@
 	</div>
 {:else}
 	<main class="p-10 flex flex-col">
-		<div class="flex items-center space-x-6">
+		<div class="flex items-center space-x-6 pb-10">
 			<Button on:click={openModal} class="bg-blue-500 w-40">
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
 				Upload Data</Button
 			>
+			<a href="/Sample template.xlsx">
+				<Button class="bg-blue-500 w-40">
+					<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
+				</Button>
+			</a>
 
-			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.xlsx')}>
-				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
-			</Button>
-			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.xlsx')}>
-				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
-			</Button>
+			<a href="/Template.xlsx">
+				<Button class="bg-blue-500 w-40">
+					<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
+				</Button>
+			</a>
 		</div>
 
 		<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
