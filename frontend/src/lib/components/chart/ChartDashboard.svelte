@@ -94,9 +94,10 @@
 			lineChartX.push(element.CASH_AVAILABLE);
 		});
 
-		// if (weekFigs.length !== 0 ) {
-		// 	showModalData = true;
-		// }
+		if (weekFigs.length !== 0) {
+			showModalData = false;
+			loading = false;
+		}
 
 		return rowObject;
 	}
