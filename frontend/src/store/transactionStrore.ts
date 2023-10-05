@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import axios from 'axios';
 import { storable } from './storable';
 import Result from 'postcss/lib/result';
+import { uploadeWeeeklyFigStore } from "./weeklyFigure"
 
 // export interface TradeResponse {
 //     trades: Array<TradeType>;
@@ -19,9 +20,9 @@ import Result from 'postcss/lib/result';
 // }
 
 
-// const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/transactions';
+const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/transactions';
 
-const baseURL: string = "http://127.0.0.1:7001/api/transactions";
+// const baseURL: string = "http://127.0.0.1:7001/api/transactions";
 
 
 export const transactionStore = writable([]);
@@ -45,8 +46,9 @@ const UploadTransactionStore = () => {
 
                 // console.log("After Upload Before Upload", data.data);
 
-                // transactionStore.set(data.data);
+                transactionStore.set(data.data);
 
+                // await uploadeWeeeklyFigStore.get()
 
             } catch (error: any) {
                 transactionStore.set([]);

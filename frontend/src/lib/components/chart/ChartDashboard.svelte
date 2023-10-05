@@ -62,11 +62,14 @@
 		let rowObject: any = 0;
 		tradeStore.subscribe(($tradeStore) => (rowObject = $tradeStore));
 
-		weeklyFigStore.subscribe(($store) => (weekFigs = $store));
+		weeklyFigStore.subscribe(($store) => {
+			weekFigs = $store;
+			console.log('%', $store);
+		});
 
 		weekFigs.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
 
-		// console.log('_________', weekFigs);
+		console.log('_________', weekFigs);
 
 		rowObject.sort((a: any, b: any) => a.DATE - b.DATE);
 
@@ -131,7 +134,7 @@
 					// DemoChart.data.datasets[0].data = ChartDataSet;
 					// DemoChart.update();
 					rows = [...rowObject];
-					if (ChartDataSet.length !== 0) {
+					if (ChartDataSet.length !== 0 || weekFigs.length != 0) {
 						loading = false;
 					}
 				});
@@ -240,6 +243,7 @@
 		loading = true;
 
 		uploadTransactionStore.upload(csvData, formData);
+		HandleData();
 
 		modal = false;
 	}
@@ -278,7 +282,7 @@
 	let formData = {
 		securities_balance: 0,
 		securities_inLien: 0,
-		cash_inLine: 0
+		cash_inLien: 0
 	};
 </script>
 
@@ -338,7 +342,7 @@
 						type="text"
 						class="w-full"
 						style="margin-top: 2px;"
-						bind:value={formData.cash_inLine}
+						bind:value={formData.cash_inLien}
 						required
 					/>
 				</div>
