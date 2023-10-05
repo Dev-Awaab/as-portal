@@ -14,7 +14,7 @@ type TradestateType = {
 
 
 const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
-//"http://127.0.0.1:7001/api/weeklyfigures";
+// const baseURL: string = "http://127.0.0.1:7001/api/weeklyfigures";
 
 export const weeklyFigStore = writable([]);
 
@@ -25,7 +25,8 @@ const UploadeWeeeklyFigStore = () => {
 		get: async () => {
 			try {
 				const { data } = await axios.get(`${baseURL}/retrive`);
-				// console.log(data);
+
+				console.log("Weekly Fig Data", data);
 
 				weeklyFigStore.set(data.data.data);
 

@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import axios from 'axios';
 import { storable } from './storable';
 import Result from 'postcss/lib/result';
+import { uploadeWeeeklyFigStore } from "./weeklyFigure"
 
 // export interface TradeResponse {
 //     trades: Array<TradeType>;
@@ -45,8 +46,9 @@ const UploadTransactionStore = () => {
 
                 // console.log("After Upload Before Upload", data.data);
 
-                // transactionStore.set(data.data);
+                transactionStore.set(data.data);
 
+                // await uploadeWeeeklyFigStore.get()
 
             } catch (error: any) {
                 transactionStore.set([]);
