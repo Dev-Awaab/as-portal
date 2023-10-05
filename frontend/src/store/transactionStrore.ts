@@ -3,6 +3,7 @@ import axios from 'axios';
 import { storable } from './storable';
 import Result from 'postcss/lib/result';
 import { uploadeWeeeklyFigStore } from "./weeklyFigure"
+import { serverInstance } from '../utils/baseUrl';
 
 // export interface TradeResponse {
 //     trades: Array<TradeType>;
@@ -20,9 +21,10 @@ import { uploadeWeeeklyFigStore } from "./weeklyFigure"
 // }
 
 
-const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/transactions';
+// const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/transactions';
 
 // const baseURL: string = "http://127.0.0.1:7001/api/transactions";
+const baseURL: string = '/api/transactions';
 
 
 export const transactionStore = writable([]);
@@ -42,7 +44,7 @@ const UploadTransactionStore = () => {
                 // console.log("From Before Upload", data);
                 console.log(`${baseURL}/upload`, appData);
 
-                const data = await axios.post(`${baseURL}/upload`, appData);
+                const data = await serverInstance.post(`${baseURL}/upload`, appData);
 
                 // console.log("After Upload Before Upload", data.data);
 
@@ -56,7 +58,7 @@ const UploadTransactionStore = () => {
         },
         getAll: async () => {
             try {
-                const { data } = await axios.get(`${baseURL}/retrive`);
+                const { data } = await serverInstance.get(`${baseURL}/retrive`);
                 // console.log(data);
 
                 transactionStore.set(data.data.data);

@@ -69,7 +69,7 @@
 
 		weekFigs.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
 
-		console.log('_________', weekFigs);
+		// console.log('_________', weekFigs);
 
 		rowObject.sort((a: any, b: any) => a.DATE - b.DATE);
 

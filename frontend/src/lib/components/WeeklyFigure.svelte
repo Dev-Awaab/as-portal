@@ -13,6 +13,7 @@
 	import moment from 'moment';
 	import { elements } from 'chart.js';
 	import Spinner from './Spinner.svelte';
+	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../store';
 
 	let data: any = [];
 	let loading = false;
@@ -33,12 +34,12 @@
 	onMount(async () => {
 		try {
 			loading = true;
-			const res = await axios.get(
-				'http://127.0.0.1:7001/api/weeklyfigures/retrive'
-				// 'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
-			);
+			const res = await uploadeWeeeklyFigStore.get();
 
-			data = res.data.data.data;
+			weeklyFigStore.subscribe(($store) => {
+				data = $store;
+				console.log('%', $store);
+			});
 
 			let sorted = data.sort(
 				(a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime()

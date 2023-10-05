@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import type { LoginValues, RegisterValues, UserResponse } from '../utils';
 import axios from 'axios';
 import { storable } from './storable';
+import { serverInstance } from '../utils/baseUrl';
 
 type TradestateType = {
 	trades: any | null;
@@ -20,8 +21,10 @@ type TradestateType = {
 // 	}
 // });
 
-const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
+// const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
 // const baseURL: string = "http://127.0.0.1:7001/api/weeklyfigures";
+const baseURL: string = "/api/weeklyfigures"
+
 
 export const weeklyFigStore = writable([]);
 
@@ -31,7 +34,7 @@ const UploadeWeeeklyFigStore = () => {
 	return {
 		get: async () => {
 			try {
-				const { data } = await axios.get(`${baseURL}/retrive`);
+				const { data } = await serverInstance.get(`${baseURL}/retrive`);
 
 				console.log("Weekly Fig Data", data);
 

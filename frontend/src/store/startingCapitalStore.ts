@@ -2,10 +2,12 @@ import { writable } from 'svelte/store';
 import axios from 'axios';
 import { storable } from './storable';
 import Result from 'postcss/lib/result';
+import { serverInstance } from '../utils/baseUrl';
 
 
 // const baseURL: string = "http://127.0.0.1:7001/api/startingcapital"
-const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/startingcapital';
+// const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/startingcapital';
+const baseURL: string = '/api/startingcapital';
 
 export const capitalStore = writable([]);
 
@@ -25,7 +27,7 @@ const StartingCapitalStore = () => {
 
 
 
-                const { data } = await axios.post(`${baseURL}/`, formData);
+                const { data } = await serverInstance.post(`${baseURL}/`, formData);
 
                 capitalStore.set(data.data);
 
@@ -35,7 +37,7 @@ const StartingCapitalStore = () => {
         },
         getCapitalData: async () => {
             try {
-                const { data } = await axios.get(`${baseURL}/`);
+                const { data } = await serverInstance.get(`${baseURL}/`);
 
                 capitalStore.set(data.data.data);
 
