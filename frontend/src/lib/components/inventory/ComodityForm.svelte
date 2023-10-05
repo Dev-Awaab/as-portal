@@ -22,11 +22,27 @@
 </script>
 
 <div>
-	<div class="flex items-center py-5 px-3">
+	<div class="flex items-center py-5 px-3 bg-orange-400 border-b">
 		<Heading tag="h5">{comodityName}</Heading>
 	</div>
 	<Table class="w-full">
-		<TableHead defaultRow={false} class="w-full">
+		<TableHead defaultRow={false} class="w-full bg-orange-400">
+			<TableHeadCell />
+			<TableHeadCell>Volume</TableHeadCell>
+			<TableHeadCell>Avg Price</TableHeadCell>
+			<TableHeadCell>Value</TableHeadCell>
+			<TableHeadCell />
+		</TableHead>
+		<TableBody>
+			<TableBodyRow>
+				<TableBodyCell>Inventory</TableBodyCell>
+				<TableBodyCell>202,164</TableBodyCell>
+				<TableBodyCell>₦ 259.00</TableBodyCell>
+				<TableBodyCell>₦ 52,360,476.00</TableBodyCell>
+			</TableBodyRow>
+		</TableBody>
+
+		<TableHead defaultRow={false} class="w-full bg-orange-400">
 			<TableHeadCell />
 			<TableHeadCell>Volume</TableHeadCell>
 			<TableHeadCell>Mkt Price</TableHeadCell>
@@ -44,6 +60,7 @@
 			{/each}
 		</TableBody>
 	</Table>
+	
 </div>
 
 <!-- <div class="">

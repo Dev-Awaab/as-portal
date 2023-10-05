@@ -12,25 +12,45 @@ type TradestateType = {
 	success: boolean;
 };
 
-// const baseURL = '';
-// const instance = axios.create({
-// 	baseURL: 'https://trade-accounting-demo.onrender.com/api/weeklyfigures', // Replace with your API's base URL
-// 	headers: {
-// 		'Content-Type': 'application/json', // Adjust content type as needed
-// 		'Access-Control-Allow-Origin': 'http://127.0.0.1:5173'
+// import { writable } from 'svelte/store';
+// import axios from 'axios';
+
+// const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
+// // const baseURL: string = "http://127.0.0.1:7001/api/weeklyfigures";
+
+// export const weeklyFigStore = writable([]);
+
+// const UploadeWeeeklyFigStore = () => {
+
+// 	return {
+// 		get: async () => {
+// 			try {
+// 				const { data } = await axios.get(`${baseURL}/retrive`);
+
+// 				console.log("Weekly Fig Data", data);
+
+// 				weeklyFigStore.set(data.data.data);
+
+// 			} catch (error: any) {
+// 				weeklyFigStore.set([]);
+// 			}
+// 		},
 // 	}
-// });
+// };
 
 // const baseURL: string = "https://trade-accounting-demo.onrender.com/api/weeklyfigures"
 // const baseURL: string = "http://127.0.0.1:7001/api/weeklyfigures";
 const baseURL: string = "/api/weeklyfigures"
 
+// const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/weeklyfigures';
 
-export const weeklyFigStore = writable([]);
+// Create a store with loading state
+const weeklyFigStore = writable({
+	data: [],
+	loading: false
+});
 
 const UploadeWeeeklyFigStore = () => {
-	// transactionStore.subscribe(($transactionStore) => $transactionStore);
-
 	return {
 		get: async () => {
 			try {
@@ -40,12 +60,21 @@ const UploadeWeeeklyFigStore = () => {
 
 				weeklyFigStore.set(data.data.data);
 
+				// Set loading to true when fetching
+				weeklyFigStore.update((state) => ({ ...state, loading: true }));
+				weeklyFigStore.set({
+					data: data.data.data,
+					loading: false // Set loading to false when data is fetched
+				});
 			} catch (error: any) {
-				weeklyFigStore.set([]);
+				weeklyFigStore.set({
+					data: [],
+					loading: false // Set loading to false on error
+				});
 			}
-		},
-	}
+		}
+	};
 };
 
-
 export const uploadeWeeeklyFigStore = UploadeWeeeklyFigStore();
+export { weeklyFigStore }; // Export the store with loading state
