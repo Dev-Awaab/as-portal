@@ -290,21 +290,7 @@
 		securities_inLien: 0,
 		cash_inLien: 0
 	};
-	async function downloadExcelFile(name: string) {
-		try {
-			const response = await fetch(`/static/${name}`); // Replace with the path to your Excel file
-			const blob = await response.blob();
 
-			const url = window.URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `${name}`; // Set the filename with .xlsx extension
-			a.click();
-			window.URL.revokeObjectURL(url);
-		} catch (error) {
-			console.error('Error downloading the Excel file:', error);
-		}
-	}
 </script>
 
 {#if $weeklyFigStore.loading}
