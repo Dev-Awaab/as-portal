@@ -47,7 +47,10 @@ const baseURL: string = "/api/weeklyfigures"
 // Create a store with loading state
 const weeklyFigStore = writable({
 	data: [],
-	loading: false
+	loading: false,
+	message: null,
+	error: false,
+	success: false
 });
 
 const UploadeWeeeklyFigStore = () => {
@@ -64,12 +67,18 @@ const UploadeWeeeklyFigStore = () => {
 				weeklyFigStore.update((state) => ({ ...state, loading: true }));
 				weeklyFigStore.set({
 					data: data.data.data,
-					loading: false // Set loading to false when data is fetched
+					loading: false,
+					error: false,
+					message: data.message,
+					success: true
 				});
 			} catch (error: any) {
 				weeklyFigStore.set({
 					data: [],
-					loading: false // Set loading to false on error
+					loading: false,
+					error: true,
+					message: error.response.data.error,
+					success: false
 				});
 			}
 		}

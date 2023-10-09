@@ -22,6 +22,7 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
+	import CustomAlert from '$lib/components/common/CustomAlert.svelte';
 
 	onMount(async () => {
 		HandleData();
@@ -30,7 +31,13 @@
 	async function HandleData() {
 		await initalCapitalStore.getCapitalData();
 		let rowObject: any = rows;
-		capitalStore.subscribe(($capitalStore) => (rowObject = $capitalStore));
+
+		capitalStore.subscribe(($capitalStore) => {
+			rowObject = $capitalStore.data;
+			message = $capitalStore.message;
+			error = $capitalStore.error;
+			console.log($capitalStore);
+		});
 		// console.log('Getting list of Capitals ', rowObject);
 
 		rowObject.sort((a: any, b: any) => a.year - b.year);
@@ -39,6 +46,7 @@
 		// console.log(rows);
 
 		rows.reverse();
+		showAlert();
 	}
 
 	let formData = {
@@ -56,6 +64,7 @@
 			performaceTarget: formData.performaceTarget
 		});
 		modal = false;
+		// showAlert();
 	}
 
 	export let rows: any[] = [
@@ -125,8 +134,26 @@
 			currency: 'NGN'
 		});
 	}
+
+	let isAlertVisible = false;
+	let error = false;
+	let message: string | null = null;
+
+	function showAlert() {
+		isAlertVisible = true;
+		setTimeout(() => {
+			closeAlert();
+		}, 3000);
+	}
+
+	function closeAlert() {
+		isAlertVisible = false;
+	}
 </script>
 
+{#if isAlertVisible && error}
+	<CustomAlert color="bg-red-300" {message} />
+{/if}
 <main class="md:p-10 p-5 flex flex-col">
 	<Button on:click={openModal} class="bg-orange-500 text-white w-40 mb-5 ">Enter New Capital</Button
 	>

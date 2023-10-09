@@ -13,6 +13,11 @@
 	import { uploadTransactionStore, transactionStore } from '../../../store';
 	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../../store';
 
+	// import { Line } from 'svelte-chartjs';
+	import { DownloadOutline, ShoppingCartSolid, UploadOutline } from 'flowbite-svelte-icons';
+	import Spinner from '../Spinner.svelte';
+	import CustomAlert from '$lib/components/common/CustomAlert.svelte';
+
 	export let ChartDataSet: any[] = [];
 	let csvData: any = [];
 	let DemoChart: Chart;
@@ -63,8 +68,10 @@
 		tradeStore.subscribe(($tradeStore) => (rowObject = $tradeStore));
 
 		weeklyFigStore.subscribe(($store) => {
-			weekFigs = $store;
-			// console.log('%', $store);
+			weekFigs = $store.data;
+			message = $store.message;
+			error = $store.error;
+			console.log('%', $store);
 		});
 
 		weekFigs.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
@@ -101,6 +108,8 @@
 			showModalData = false;
 			loading = false;
 		}
+
+		showAlert();
 
 		return rowObject;
 	}
@@ -284,151 +293,198 @@
 		securities_inLien: 0,
 		cash_inLien: 0
 	};
+	async function downloadExcelFile(name: string) {
+		try {
+			const response = await fetch(`/static/${name}`); // Replace with the path to your Excel file
+			const blob = await response.blob();
+
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `${name}`; // Set the filename with .xlsx extension
+			a.click();
+			window.URL.revokeObjectURL(url);
+		} catch (error) {
+			console.error('Error downloading the Excel file:', error);
+		}
+	}
+
+	let isAlertVisible = false;
+	let error = false;
+	let message: string | null = null;
+
+	function showAlert() {
+		isAlertVisible = true;
+		setTimeout(() => {
+			closeAlert();
+		}, 3000);
+	}
+
+	function closeAlert() {
+		isAlertVisible = false;
+	}
 </script>
 
-<main class="p-10 flex flex-col">
-	<Button on:click={openModal} class="bg-orange-500 text-white w-40">Upload Data</Button>
+{#if isAlertVisible && error}
+	<CustomAlert color="bg-red-300" {message} />
+{/if}
 
-	<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
-		<div>
-			<form
-				name="uploadForm"
-				class="flex items-center flex-col space-y-5"
-				on:submit={HandleFormSubmit}
+{#if $weeklyFigStore.data.length == 0}
+	<div>
+		<Spinner />
+	</div>
+{:else}
+	<main class="p-10 flex flex-col">
+		<div class="flex items-center space-x-6">
+			<Button on:click={openModal} class="bg-blue-500 w-40">
+				<UploadOutline class="w-3.5 h-3.5  mr-2" />
+				Upload Data</Button
 			>
-				<div class="">
-					<span class="font-bold">Upload a File</span>
-					<input
-						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-						id="uploadInput"
-						type="file"
-						use:HandleFile
-						class="opacity-0 cursor-pointer"
-					/>
-					<label
-						for="uploadInput"
-						class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
-					>
-						<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
-					</label>
-				</div>
 
-				<div class="w-full">
-					<span class="block mb-3 font-bold">Security Balance</span>
-					<input
-						id="yearInput"
-						type="text"
-						class="w-full"
-						bind:value={formData.securities_balance}
-						required
-					/>
-				</div>
-
-				<div class="w-full">
-					<span class="block mb-3 font-bold">Security InLien</span>
-					<input
-						id="balanceInput"
-						type="text"
-						class="w-full"
-						style="margin-top: 2px;"
-						bind:value={formData.securities_inLien}
-						required
-					/>
-				</div>
-				<div class="w-full">
-					<span class="block mb-3 font-bold">Cash InLien</span>
-					<input
-						id="balanceInput"
-						type="text"
-						class="w-full"
-						style="margin-top: 2px;"
-						bind:value={formData.cash_inLien}
-						required
-					/>
-				</div>
-
-				<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
-			</form>
+			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.xlsx')}>
+				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
+			</Button>
+			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.xlsx')}>
+				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
+			</Button>
 		</div>
-	</CustomModal>
-
-	{#if ChartDataSet.length === 0 && !modal}
-		<div class="text-center font-semibold text-gray-600">
-			<p>No data</p>
-			<p>Upload a document to see the Chart</p>
-		</div>
-	{/if}
-
-	{#if loading}
-		<div
-			style="margin: auto;"
-			class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-			role="status"
-		>
-			<span
-				class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-				>Loading...</span
-			>
-		</div>
-	{:else if ChartDataSet.length !== 0 || showModalData}
-		{#if true}
-			{#key ChartDataSet}
-				<div class="flex flex-wrap justify-center">
-					<Line {data} options={{ responsive: true }} />
-					<!-- first row -->
-					<div class="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 mb-5">
-						<!-- First Chart (Assuming it's BarChart) -->
-						<div class="mb-4 shadow-md px-5 py-2 rounded-md">
-							<p class="text-center font-bold tracking-wider py-2 text-xl">Line Chart</p>
-							<canvas id="acquisitions" use:DisplayChart />
-						</div>
-						<!-- Second Chart (Assuming it's PieChart) -->
-						<div class="mb-4 shadow-md px-5 py-4 rounded-md">
-							<p class="text-center font-bold tracking-wider py-2 text-xl">Pie Chart</p>
-							<PieChart ChartDataSet={PieChartData} {commodities} />
+		<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
+			<div>
+				<form
+					name="uploadForm"
+					class="flex items-center flex-col space-y-5"
+					on:submit={HandleFormSubmit}
+				>
+					<div>
+						<div class="">
+							<span class="font-bold">Upload a File</span>
+							<input
+								accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+								id="uploadInput"
+								type="file"
+								use:HandleFile
+								class="opacity-0 cursor-pointer"
+							/>
+							<label
+								for="uploadInput"
+								class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
+							>
+								<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
+							</label>
 						</div>
 					</div>
-					<div class="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 mb-5">
-						<!-- Third Component (Assuming it's BarChart) -->
-						<div class="mb-4 shadow-md px-5 py-4 rounded-md">
-							<h1 class="text-center font-bold py-2 text-xl">Bar Chart</h1>
-							<BarChart {ChartDataSet} />
-						</div>
-						<div style="margin:5px;">
-							<SummaryTable {ChartDataSet} />
-						</div>
+
+					<div class="w-full">
+						<span class="block mb-3 font-bold">Security Balance</span>
+						<input
+							id="yearInput"
+							type="text"
+							class="w-full"
+							bind:value={formData.securities_balance}
+							required
+						/>
 					</div>
-					<!-- <SvelteTable {columns} {rows} /> -->
-				</div>
-			{/key}
-			{#key ChartDataSet}
-				<div class="overflow-x-auto">
-					<table class="min-w-full border-collapse border border-gray-300">
-						<thead>
-							<tr>
-								{#each columns as column}
-									<th class="bg-gray-200 p-2">{column.title}</th>
-								{/each}
-							</tr>
-						</thead>
-						<tbody>
-							{#each rows as row}
+
+					<div class="w-full">
+						<span class="block mb-3 font-bold">Security InLien</span>
+						<input
+							id="balanceInput"
+							type="text"
+							class="w-full"
+							style="margin-top: 2px;"
+							bind:value={formData.securities_inLien}
+							required
+						/>
+					</div>
+					<div class="w-full">
+						<span class="block mb-3 font-bold">Cash InLien</span>
+						<input
+							id="balanceInput"
+							type="text"
+							class="w-full"
+							style="margin-top: 2px;"
+							bind:value={formData.cash_inLien}
+							required
+						/>
+					</div>
+
+					<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
+				</form>
+			</div>
+		</CustomModal>
+
+		{#if ChartDataSet.length === 0 && !modal}
+			<div class="text-center font-semibold text-gray-600">
+				<p>No data</p>
+				<p>Upload a document to see the Chart</p>
+			</div>
+		{/if}
+
+		{#if loading}
+			<div
+				style="margin: auto;"
+				class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+				role="status"
+			>
+				<span
+					class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+					>Loading...</span
+				>
+			</div>
+		{:else if ChartDataSet.length !== 0 || showModalData}
+			{#if true}
+				{#key ChartDataSet}
+					<div class="flex flex-wrap justify-center">
+						<Line {data} options={{ responsive: true }} />
+						<!-- first row -->
+						<div class="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 mb-5">
+							<!-- First Chart (Assuming it's BarChart) -->
+							<div class="mb-4 shadow-md px-5 py-2 rounded-md">
+								<p class="text-center font-bold tracking-wider py-2 text-xl">Line Chart</p>
+								<canvas id="acquisitions" use:DisplayChart />
+							</div>
+							<!-- Second Chart (Assuming it's PieChart) -->
+							<div class="mb-4 shadow-md px-5 py-4 rounded-md">
+								<p class="text-center font-bold tracking-wider py-2 text-xl">Pie Chart</p>
+								<PieChart ChartDataSet={PieChartData} {commodities} />
+							</div>
+						</div>
+						<div class="w-full md:w-1/2 lg:w-1/2 xl:w-1/2 p-4 mb-5">
+							<!-- Third Component (Assuming it's BarChart) -->
+							<div class="mb-4 shadow-md px-5 py-4 rounded-md">
+								<h1 class="text-center font-bold py-2 text-xl">Bar Chart</h1>
+								<BarChart {ChartDataSet} />
+							</div>
+							<div style="margin:5px;">
+								<SummaryTable {ChartDataSet} />
+							</div>
+						</div>
+						<!-- <SvelteTable {columns} {rows} /> -->
+					</div>
+				{/key}
+				{#key ChartDataSet}
+					<div class="overflow-x-auto">
+						<table class="min-w-full border-collapse border border-gray-300">
+							<thead>
 								<tr>
 									{#each columns as column}
-										<td class="border border-gray-300 p-2 {column.class}">{column.value(row)}</td>
+										<th class="bg-gray-200 p-2">{column.title}</th>
 									{/each}
 								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-			{/key}
-
-			<!-- {:else}
-  <div class="text-center font-semibold text-gray-600">
-	<p>No data</p>
-	 <p>Upload a document to see the Chart</p>
-  </div> -->
+							</thead>
+							<tbody>
+								{#each rows as row}
+									<tr>
+										{#each columns as column}
+											<td class="border border-gray-300 p-2 {column.class}">{column.value(row)}</td>
+										{/each}
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
+				{/key}
+			{/if}
 		{/if}
-	{/if}
-</main>
+	</main>
+{/if}

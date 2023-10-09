@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	import type { ComponentType, SvelteComponent, ComponentEvents } from 'svelte';
 	import {
 		Heading,
 		Table,
@@ -6,19 +7,18 @@
 		TableBodyCell,
 		TableBodyRow,
 		TableHead,
-		TableHeadCell
+		TableHeadCell,
+		Button
 	} from 'flowbite-svelte';
 
 	/**
 	 * @type {any}
 	 */
-	export let comodityData;
+	export let comodityData: any;
 	/**
 	 * @type {any}
 	 */
-	export let comodityName;
-
-	// Sample data
+	export let comodityName: any;
 </script>
 
 <div>
@@ -60,7 +60,6 @@
 			{/each}
 		</TableBody>
 	</Table>
-	
 </div>
 
 <!-- <div class="">

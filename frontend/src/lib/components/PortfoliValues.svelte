@@ -12,6 +12,7 @@
 	import axios from 'axios';
 	import moment from 'moment';
 	import Spinner from './Spinner.svelte';
+	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../store';
 
 	let data: any = [];
 	let loading = false;
@@ -19,11 +20,20 @@
 	onMount(async () => {
 		try {
 			loading = true;
-			const res = await axios.get(
-				'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
-			);
+			// const res = await axios.get(
+			// 	'https://trade-accounting-demo.onrender.com/api/weeklyfigures/retrive'
+			// );
+			// data = res.data.data.data;
 
-			data = res.data.data.data;
+			const res = await uploadeWeeeklyFigStore.get();
+
+			weeklyFigStore.subscribe(($store) => {
+				data = $store.data;
+				message = $store.message;
+				error = $store.error;
+				console.log('%', $store);
+			});
+
 			data = data.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
 		} catch (error) {
 			console.error('Error fetching data:', error);
@@ -63,6 +73,23 @@
 			currency: 'NGN'
 		});
 	};
+
+	let isAlertVisible = false;
+	let error = false;
+	let message: string | null = null;
+
+	function showAlert() {
+		isAlertVisible = true;
+		setTimeout(() => {
+			closeAlert();
+		}, 3000);
+	}
+
+	function closeAlert() {
+		isAlertVisible = false;
+	}
+
+	console.log(data);
 </script>
 
 {#if loading}

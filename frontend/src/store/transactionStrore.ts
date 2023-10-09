@@ -27,7 +27,13 @@ import { serverInstance } from '../utils/baseUrl';
 const baseURL: string = '/api/transactions';
 
 
-export const transactionStore = writable([]);
+export const transactionStore = writable({
+    data: [],
+    loading: false,
+    message: null,
+    error: false,
+    success: false
+});
 
 const UploadTransactionStore = () => {
 
@@ -44,16 +50,28 @@ const UploadTransactionStore = () => {
                 // console.log("From Before Upload", data);
                 console.log(`${baseURL}/upload`, appData);
 
-                const data = await serverInstance.post(`${baseURL}/upload`, appData);
+                const { data } = await serverInstance.post(`${baseURL}/upload`, appData);
 
                 // console.log("After Upload Before Upload", data.data);
 
-                transactionStore.set(data.data);
+                transactionStore.set({
+                    data: data.data.data,
+                    loading: false,
+                    error: false,
+                    message: data.message,
+                    success: true
+                });
 
                 // await uploadeWeeeklyFigStore.get()
 
             } catch (error: any) {
-                transactionStore.set([]);
+                transactionStore.set({
+                    data: [],
+                    loading: false,
+                    error: true,
+                    message: error.response.data.error,
+                    success: false
+                });
             }
         },
         getAll: async () => {
@@ -61,10 +79,22 @@ const UploadTransactionStore = () => {
                 const { data } = await serverInstance.get(`${baseURL}/retrive`);
                 // console.log(data);
 
-                transactionStore.set(data.data.data);
+                transactionStore.set({
+                    data: data.data.data,
+                    loading: false,
+                    error: false,
+                    message: data.message,
+                    success: true
+                });
 
             } catch (error: any) {
-                transactionStore.set([]);
+                transactionStore.set({
+                    data: [],
+                    loading: false,
+                    error: true,
+                    message: error.response.data.error,
+                    success: false
+                });
             }
         },
     }

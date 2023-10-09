@@ -9,11 +9,11 @@
 		TableHeadCell
 	} from 'flowbite-svelte';
 	import { onMount } from 'svelte';
-	import axios from 'axios';
 	import moment from 'moment';
 	import { elements } from 'chart.js';
 	import Spinner from './Spinner.svelte';
 	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../store';
+	import CustomAlert from '$lib/components/common/CustomAlert.svelte';
 
 	let data: any = [];
 	let loading = false;
@@ -29,6 +29,8 @@
 				style: 'currency',
 				currency: 'NGN'
 			});
+
+		showAlert();
 	}
 
 	onMount(async () => {
@@ -37,7 +39,9 @@
 			const res = await uploadeWeeeklyFigStore.get();
 
 			weeklyFigStore.subscribe(($store) => {
-				data = $store;
+				data = $store.data;
+				message = $store.message;
+				error = $store.error;
 				console.log('%', $store);
 			});
 
@@ -58,9 +62,27 @@
 		});
 	};
 
+	let isAlertVisible = false;
+	let error = false;
+	let message: string | null = null;
+
+	function showAlert() {
+		isAlertVisible = true;
+		setTimeout(() => {
+			closeAlert();
+		}, 3000);
+	}
+
+	function closeAlert() {
+		isAlertVisible = false;
+	}
+
 	console.log(data);
 </script>
 
+{#if isAlertVisible && error}
+	<CustomAlert color="bg-red-300" {message} />
+{/if}
 {#if loading}
 	<Spinner />
 {:else}

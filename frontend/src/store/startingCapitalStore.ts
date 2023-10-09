@@ -9,7 +9,13 @@ import { serverInstance } from '../utils/baseUrl';
 // const baseURL: string = 'https://trade-accounting-demo.onrender.com/api/startingcapital';
 const baseURL: string = '/api/startingcapital';
 
-export const capitalStore = writable([]);
+export const capitalStore = writable({
+    data: [],
+    loading: false,
+    message: null,
+    error: false,
+    success: false
+});
 
 const StartingCapitalStore = () => {
 
@@ -29,20 +35,44 @@ const StartingCapitalStore = () => {
 
                 const { data } = await serverInstance.post(`${baseURL}/`, formData);
 
-                capitalStore.set(data.data);
+                capitalStore.set({
+                    data: data.data.data,
+                    loading: false,
+                    error: false,
+                    message: data.message,
+                    success: true
+                });
 
             } catch (error: any) {
-                capitalStore.set([]);
+                capitalStore.set({
+                    data: [],
+                    loading: false,
+                    error: true,
+                    message: error.response.data.error,
+                    success: false
+                });
             }
         },
         getCapitalData: async () => {
             try {
                 const { data } = await serverInstance.get(`${baseURL}/`);
 
-                capitalStore.set(data.data.data);
+                capitalStore.set({
+                    data: data.data.data,
+                    loading: false,
+                    error: false,
+                    message: data.message,
+                    success: true
+                });
 
             } catch (error: any) {
-                capitalStore.set([]);
+                capitalStore.set({
+                    data: [],
+                    loading: false,
+                    error: true,
+                    message: error.response.data.error,
+                    success: false
+                });
             }
         },
     }

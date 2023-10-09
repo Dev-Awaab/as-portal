@@ -1,0 +1,107 @@
+<script lang="ts">
+	import { type ComponentType, type SvelteComponent, type ComponentEvents, onMount } from 'svelte';
+	import {
+		Heading,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Button
+	} from 'flowbite-svelte';
+
+	/**
+	 * @type {any}
+	 */
+	export let comodityData: any;
+	/**
+	 * @type {any}
+	 */
+	// export let comodityName: any;
+	let displayData: any = [];
+
+	onMount(async () => {
+		HandleData();
+	});
+
+	$: {
+		HandleData();
+	}
+
+	function HandleData() {
+		console.log();
+
+		displayData.push({
+			label: 'Units Bought',
+			volume: comodityData.VOL_BUY,
+			marketPrice: comodityData.AVG_BUY,
+			value: comodityData.UNIT_BOUGHT
+		});
+
+		displayData.push({
+			label: 'Units Sold',
+			volume: comodityData.VOL_SELL,
+			marketPrice: comodityData.AVG_SELL,
+			value: comodityData.UNIT_SOLD
+		});
+
+		displayData.push({
+			label: 'Margin',
+			volume: '',
+			marketPrice: comodityData.MARGIN,
+			value: ''
+		});
+
+		// console.log('_________', displayData);
+	}
+
+	// console.log('_________', comodityData);
+	const formatNum = (data: number) => {
+		return data.toLocaleString('en-NG', {
+			style: 'currency',
+			currency: 'NGN'
+		});
+	};
+</script>
+
+<div>
+	<div class="flex items-center py-5 px-3 bg-orange-400 border-b">
+		<Heading tag="h5">{comodityData.COMMODITY}</Heading>
+	</div>
+	<Table class="w-full">
+		<TableHead defaultRow={false} class="w-full bg-orange-400">
+			<TableHeadCell />
+			<TableHeadCell>Volume</TableHeadCell>
+			<TableHeadCell>Avg Price</TableHeadCell>
+			<TableHeadCell>Value</TableHeadCell>
+			<TableHeadCell />
+		</TableHead>
+		<TableBody>
+			<TableBodyRow>
+				<TableBodyCell>Inventory</TableBodyCell>
+				<TableBodyCell>{comodityData.VOLUME}</TableBodyCell>
+				<TableBodyCell>{formatNum(comodityData.MKT_PRICE)}</TableBodyCell>
+				<TableBodyCell>{formatNum(comodityData.VALUE)}</TableBodyCell>
+			</TableBodyRow>
+		</TableBody>
+
+		<TableHead defaultRow={false} class="w-full bg-orange-400">
+			<TableHeadCell />
+			<TableHeadCell>Volume</TableHeadCell>
+			<TableHeadCell>Mkt Price</TableHeadCell>
+			<TableHeadCell>Value</TableHeadCell>
+			<TableHeadCell />
+		</TableHead>
+		<TableBody>
+			{#each displayData as item (item.label)}
+				<TableBodyRow>
+					<TableBodyCell>{item.label}</TableBodyCell>
+					<TableBodyCell>{item.volume}</TableBodyCell>
+					<TableBodyCell>{formatNum(item.marketPrice)}</TableBodyCell>
+					<TableBodyCell>{formatNum(item.value)}</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
+</div>
