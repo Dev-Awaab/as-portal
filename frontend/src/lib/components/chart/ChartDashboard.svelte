@@ -323,6 +323,7 @@
 	function closeAlert() {
 		isAlertVisible = false;
 	}
+
 </script>
 
 {#if isAlertVisible && error}
