@@ -66,11 +66,11 @@
 </script>
 
 <div>
-	<div class="flex items-center py-5 px-3 bg-orange-400 border-b">
+	<div class="flex items-center py-5 px-3 bg-blue-500 border-b">
 		<Heading tag="h5">{comodityData.COMMODITY}</Heading>
 	</div>
 	<Table class="w-full">
-		<TableHead defaultRow={false} class="w-full bg-orange-400">
+		<TableHead defaultRow={false} class="w-full bg-blue-300">
 			<TableHeadCell />
 			<TableHeadCell>Volume</TableHeadCell>
 			<TableHeadCell>Avg Price</TableHeadCell>
@@ -86,7 +86,7 @@
 			</TableBodyRow>
 		</TableBody>
 
-		<TableHead defaultRow={false} class="w-full bg-orange-400">
+		<TableHead defaultRow={false} class="w-full bg-blue-300">
 			<TableHeadCell />
 			<TableHeadCell>Volume</TableHeadCell>
 			<TableHeadCell>Mkt Price</TableHeadCell>
