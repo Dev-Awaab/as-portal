@@ -12,6 +12,7 @@
 	import { onMount } from 'svelte';
 	import moment from 'moment';
 	import Spinner from './Spinner.svelte';
+	import { BrokerageStore, brokerageIncomeStore } from '../../store';
 
 	// Sample data for Brokerage Fee Earned
 	let data = [
@@ -36,15 +37,27 @@
 	onMount(async () => {
 		try {
 			loading = true;
-			const res = await axios.get(
-				// 'http://127.0.0.1:7001/api/transactions/brokerageIncome'
-				'https://trade-accounting-demo.onrender.com/api/transactions/brokerageIncome'
-			);
+			// const res = await axios.get(
+			// 	// 'http://127.0.0.1:7001/api/transactions/brokerageIncome'
+			// 	'https://trade-accounting-demo.onrender.com/api/transactions/brokerageIncome'
+			// );
 
-			let Ldata = res.data.data.data;
+			// let Ldata = res.data.data.data;
+
+			let Ldata: any[] = [];
+			let isAlertVisible = false;
+			let error = false;
+			let message: string | null = null;
+			await BrokerageStore.get();
+			brokerageIncomeStore.subscribe(($store) => {
+				Ldata = $store.data;
+				message = $store.message;
+				error = $store.error;
+				console.log('%', $store);
+			});
 
 			let sorted = Ldata.sort(
-				(a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime()
+				(a: any, b: any) => new Date(a.month).getTime() - new Date(b.month).getTime()
 			);
 
 			data = sorted;

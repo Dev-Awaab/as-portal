@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
 	import { Line } from 'svelte-chartjs';
 	// import { data } from './data.js';
 
+	export var chartLabel: any[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+	export var chartValues: any[] = [2000000, 1900000, 2500000, 2400000, 1800000, 1700000, 1400000]; // Loan Disbursed in NAIRA
+
 	export let data = {
-		labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+		labels: chartLabel, //['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 		datasets: [
 			{
 				label: 'Loan Disbursed (in NAIRA)',
@@ -24,7 +27,7 @@
 				pointHoverBorderWidth: 2,
 				pointRadius: 1,
 				pointHitRadius: 10,
-				data: [2000000, 1900000, 2500000, 2400000, 1800000, 1700000, 1400000] // Loan Disbursed in NAIRA
+				data: chartValues //[2000000, 1900000, 2500000, 2400000, 1800000, 1700000, 1400000] // Loan Disbursed in NAIRA
 			}
 		]
 	};

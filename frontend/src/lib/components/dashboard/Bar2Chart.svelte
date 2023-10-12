@@ -1,11 +1,15 @@
-<script>
+<script lang="ts">
 	import { Bar } from 'svelte-chartjs';
+
+	export var chartLabel: any[] = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
+	export var chartValues: any[] = [12, 19, 3, 5, 2, 3];
+
 	const data = {
-		labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+		labels: chartLabel, //['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
 		datasets: [
 			{
 				label: '% of Votes',
-				data: [12, 19, 3, 5, 2, 3],
+				data: chartValues, //[12, 19, 3, 5, 2, 3],
 				backgroundColor: [
 					'rgba(255, 134,159,0.4)',
 					'rgba(98,  182, 239,0.4)',

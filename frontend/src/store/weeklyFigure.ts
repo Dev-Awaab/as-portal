@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import type { LoginValues, RegisterValues, UserResponse } from '../utils';
 import axios from 'axios';
 import { storable } from './storable';

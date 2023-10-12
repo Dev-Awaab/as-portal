@@ -57,7 +57,7 @@
 	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
 
 	onMount(async () => {
-		HandleData();
+		await HandleData();
 	});
 
 	async function HandleData() {
@@ -323,7 +323,6 @@
 	function closeAlert() {
 		isAlertVisible = false;
 	}
-
 </script>
 
 {#if isAlertVisible && error}

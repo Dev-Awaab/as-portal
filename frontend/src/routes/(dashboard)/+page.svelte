@@ -6,10 +6,13 @@
 	import Pie2Chart from '$lib/components/dashboard/Pie2Chart.svelte';
 	import { Button } from 'flowbite-svelte';
 	import { DownloadOutline, UploadOutline } from 'flowbite-svelte-icons';
+
+	import MainDashboard from '$lib/components/dashboard/MainDashboard.svelte';
 </script>
 
+<MainDashboard />
 <!-- <ChartDashboard /> -->
-
+<!-- 
 <main>
 	<section class="p-5 space-x-10">
 		<Button class="bg-blue-500 w-40 py-5">
@@ -67,4 +70,4 @@
 			</div>
 		</div>
 	</section>
-</main>
+</main> -->
