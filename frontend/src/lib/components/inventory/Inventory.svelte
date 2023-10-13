@@ -19,7 +19,7 @@
 	let csvData: any = [];
 	let rowObject: any = [];
 
-	let modal = true;
+	let modal = false;
 	let showModalData = false;
 
 	$: {
