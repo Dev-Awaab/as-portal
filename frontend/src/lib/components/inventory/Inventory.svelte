@@ -2,7 +2,7 @@
 	import ComodityForm from './ComodityForm.svelte';
 	import { scsnData, smazData, sprlData, ssbsData, ssgmData } from './data';
 
-	import { Button } from 'flowbite-svelte';
+	import { Button, Label, Input } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import { UploadOutline } from 'flowbite-svelte-icons';
 	import Spinner from '../Spinner.svelte';
@@ -19,7 +19,7 @@
 	let csvData: any = [];
 	let rowObject: any = [];
 
-	let modal = false;
+	let modal = true;
 	let showModalData = false;
 
 	$: {
@@ -154,7 +154,7 @@
 						class="flex items-center flex-col space-y-5"
 						on:submit={HandleFormSubmit}
 					>
-						<div>
+						<!-- <div>
 							<div class="">
 								<span class="font-bold">Upload a File</span>
 								<input
@@ -171,8 +171,17 @@
 									<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
 								</label>
 							</div>
+						</div> -->
+
+						<div class="w-full">
+							<Label for="first_name" class="mb-2">commodity’s inventory volume</Label>
+							<Input type="text" id="first_name" placeholder="John" required />
 						</div>
 
+						<div class="w-full">
+							<Label for="first_name" class="mb-2">Average Price</Label>
+							<Input type="text" id="first_name" placeholder="John" required />
+						</div>
 						<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 					</form>
 				</div>
