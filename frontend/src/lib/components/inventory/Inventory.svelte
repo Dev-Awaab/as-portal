@@ -174,13 +174,13 @@
 						</div> -->
 
 						<div class="w-full">
-							<Label for="first_name" class="mb-2">commodity’s inventory volume</Label>
-							<Input type="text" id="first_name" placeholder="John" required />
+							<Label for="first_name" class="mb-2">Commodity’s Inventory Volume</Label>
+							<Input type="text" id="first_name" placeholder="inventory volume" required />
 						</div>
 
 						<div class="w-full">
 							<Label for="first_name" class="mb-2">Average Price</Label>
-							<Input type="text" id="first_name" placeholder="John" required />
+							<Input type="text" id="first_name" placeholder="average Price" required />
 						</div>
 						<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 					</form>
