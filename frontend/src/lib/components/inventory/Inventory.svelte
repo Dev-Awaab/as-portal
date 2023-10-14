@@ -110,8 +110,12 @@
 
 		loading = true;
 
-		uploadInventoryStore.upload(csvData);
+		// uploadInventoryStore.upload(csvData);
+		// HandleData();
+
+		uploadInventoryStore.sendFormData(formData);
 		HandleData();
+		console.log(formData);
 
 		modal = false;
 	}
@@ -130,6 +134,14 @@
 	function closeAlert() {
 		isAlertVisible = false;
 	}
+
+	let formData = {
+		COMMODITY: 0,
+		DATE: 'April 28, 2023',
+		VOLUME: 0,
+		VOL_BUY: 0,
+		VOL_SELL: 0
+	};
 </script>
 
 {#if isAlertVisible && error}
@@ -174,13 +186,47 @@
 						</div> -->
 
 						<div class="w-full">
-							<Label for="first_name" class="mb-2">Commodity’s Inventory Volume</Label>
-							<Input type="text" id="first_name" placeholder="inventory volume" required />
+							<Label for="first_name" class="mb-2">Commodity NAME</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="inventory volume"
+								bind:value={formData.COMMODITY}
+								required
+							/>
 						</div>
 
 						<div class="w-full">
-							<Label for="first_name" class="mb-2">Average Price</Label>
-							<Input type="text" id="first_name" placeholder="average Price" required />
+							<Label for="first_name" class="mb-2">Commodity Inventory Volume</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="0"
+								bind:value={formData.VOLUME}
+								required
+							/>
+						</div>
+
+						<div class="w-full">
+							<Label for="first_name" class="mb-2">Buy Volume</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="0"
+								bind:value={formData.VOL_BUY}
+								required
+							/>
+						</div>
+
+						<div class="w-full">
+							<Label for="first_name" class="mb-2">Sell Volume</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="0"
+								bind:value={formData.VOL_SELL}
+								required
+							/>
 						</div>
 						<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 					</form>

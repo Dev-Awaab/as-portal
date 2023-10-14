@@ -24,6 +24,39 @@ const UploadInventoryStore = () => {
 
 
     return {
+        sendFormData: async (formData: any) => {
+            try {
+
+                var appData = formData
+
+                // console.log("From Before Upload", csvData);
+                // console.log(`${baseURL}/upload`, appData);
+
+                const { data } = await serverInstance.post(`${baseURL}/uploadFormData`, appData);
+
+                inventoryStore.set(
+                    {
+                        data: data.data.data,
+                        loading: false,
+                        error: false,
+                        message: data.message,
+                        success: true
+                    }
+                );
+
+                console.log(data.data.data)
+            } catch (error: any) {
+                inventoryStore.set(
+                    {
+                        data: [],
+                        loading: false,
+                        error: true,
+                        message: error.response.data.error,
+                        success: false
+                    }
+                );
+            }
+        },
         upload: async (csvData: any) => {
             try {
 
