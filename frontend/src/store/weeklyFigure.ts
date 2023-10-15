@@ -50,7 +50,8 @@ const weeklyFigStore = writable({
 	loading: false,
 	message: null,
 	error: false,
-	success: false
+	success: false,
+	noData: false,
 });
 
 const UploadeWeeeklyFigStore = () => {
@@ -70,7 +71,8 @@ const UploadeWeeeklyFigStore = () => {
 					loading: false,
 					error: false,
 					message: data.message,
-					success: true
+					success: true,
+					noData: data.data.data.length > 0 ? false : true
 				});
 			} catch (error: any) {
 				weeklyFigStore.set({
@@ -78,7 +80,8 @@ const UploadeWeeeklyFigStore = () => {
 					loading: false,
 					error: true,
 					message: error.response.data.error,
-					success: false
+					success: false,
+					noData: true
 				});
 			}
 		}
