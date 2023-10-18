@@ -13,6 +13,8 @@
 	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../../store';
 	import { BrokerageStore, brokerageIncomeStore } from '../../../store';
 	import { uploadInventoryStore, inventoryStore } from '../../../store';
+	import CustomModal from '../common/CustomModal.svelte';
+	import { Button, Label, Input } from 'flowbite-svelte';
 
 	// import { Line } from 'svelte-chartjs';
 	import { DownloadOutline, ShoppingCartSolid, UploadOutline } from 'flowbite-svelte-icons';
@@ -36,9 +38,6 @@
 	let inventories: any = [];
 	let cash_value = 0;
 	let security_value = 0;
-
-	import CustomModal from '../common/CustomModal.svelte';
-	import { Button } from 'flowbite-svelte';
 
 	import {
 		Chart as ChartJS,
@@ -162,6 +161,17 @@
 
 	let modal = false;
 	let showModalData = false;
+	let annualModal = false;
+
+	function openAnnualModal() {
+		annualModal = true;
+		// ChartDataSet = [];
+	}
+
+	function closeAnnualModal() {
+		annualModal = false;
+		// showModalData = true;
+	}
 
 	function openModal() {
 		modal = true;
@@ -234,9 +244,13 @@
 		<div class="flex items-center space-x-6">
 			<Button on:click={openModal} class="bg-blue-500 w-40">
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
-				Upload Data</Button
+				Upload Weekly Transaction</Button
 			>
 
+			<Button on:click={openAnnualModal} class="bg-blue-500 w-40">
+				<UploadOutline class="w-3.5 h-3.5  mr-2" />
+				Upload Annual Information</Button
+			>
 			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.xlsx')}>
 				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
 			</Button>
@@ -244,6 +258,21 @@
 				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
 			</Button>
 		</div>
+		<CustomModal
+			bind:open={annualModal}
+			title="Upload Annual Information"
+			onClose={closeAnnualModal}
+		>
+			<div class="w-full">
+				<Label for="initial_investment" class="mb-2">Initial Investment</Label>
+				<Input type="text" id="initial_investment" placeholder="initial investment" required />
+			</div>
+
+			<div class="w-full">
+				<Label for="targeted_profit" class="mb-2">Targeted Profit</Label>
+				<Input type="text" id="targeted_profit" placeholder="targeted profit" required />
+			</div>
+		</CustomModal>
 		<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
 			<div>
 				<form
@@ -251,23 +280,23 @@
 					class="flex items-center flex-col space-y-5"
 					on:submit={HandleFormSubmit}
 				>
-					<div>
-						<div class="">
-							<span class="font-bold">Upload a File</span>
-							<input
-								accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-								id="uploadInput"
-								type="file"
-								use:HandleFile
-								class="opacity-0 cursor-pointer"
-							/>
-							<label
-								for="uploadInput"
-								class="block p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
-							>
-								<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
-							</label>
-						</div>
+					<div class="w-full">
+						<span class="font-bold mb-3">Upload a File</span>
+						<input
+							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+							id="uploadInput"
+							type="file"
+							use:HandleFile
+							class="opacity-0 cursor-pointer hidden mt-2"
+						/>
+						<label
+							for="uploadInput"
+							class="block p-2 border
+								 w-full
+								border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 mt-3"
+						>
+							<span class="text-gray-700">{fileName ? fileName : 'Choose a file'}</span>
+						</label>
 					</div>
 
 					<div class="w-full">
@@ -275,7 +304,7 @@
 						<input
 							id="yearInput"
 							type="text"
-							class="w-full"
+							class="w-full rounded-md border-gray-300 p-2 mt-3"
 							bind:value={formData.securities_balance}
 							required
 						/>
@@ -286,8 +315,7 @@
 						<input
 							id="balanceInput"
 							type="text"
-							class="w-full"
-							style="margin-top: 2px;"
+							class="w-full rounded-md border-gray-300 p-2 mt-3"
 							bind:value={formData.securities_inLien}
 							required
 						/>
@@ -297,8 +325,7 @@
 						<input
 							id="balanceInput"
 							type="text"
-							class="w-full"
-							style="margin-top: 2px;"
+							class="w-full rounded-md border-gray-300 p-2 mt-3"
 							bind:value={formData.cash_inLien}
 							required
 						/>
@@ -316,7 +343,7 @@
 			</div>
 		{/if}
 
-		<section class="grid grid-cols-1 md:grid-cols-2 gap-10 p-4">
+		<section class="grid grid-cols-1 xl:grid-cols-2 gap-10 p-4">
 			<div class="bg-white rounded shadow">
 				<h2
 					class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"

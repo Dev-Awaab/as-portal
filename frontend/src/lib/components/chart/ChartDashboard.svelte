@@ -379,7 +379,7 @@
 						<input
 							id="yearInput"
 							type="text"
-							class="w-full"
+							class="w-full rounded"
 							bind:value={formData.securities_balance}
 							required
 						/>
