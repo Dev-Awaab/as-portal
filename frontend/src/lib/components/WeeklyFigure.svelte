@@ -76,11 +76,21 @@
 	}
 
 	console.log(data);
+
+	$: {
+		// console.log('=======', $weeklyFigStore.message);
+		if ($weeklyFigStore.error == true) {
+			isAlertVisible = true;
+			message = $weeklyFigStore.message;
+		}
+		showAlert();
+	}
 </script>
 
-{#if isAlertVisible && error}
+{#if isAlertVisible && message != null}
 	<CustomAlert color="bg-red-300" {message} />
 {/if}
+
 {#if loading}
 	<Spinner />
 {:else}

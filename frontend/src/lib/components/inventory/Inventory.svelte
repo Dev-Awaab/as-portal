@@ -142,10 +142,24 @@
 		VOL_BUY: 0,
 		VOL_SELL: 0
 	};
+
+	$: {
+		// console.log('=======', $inventoryStore.message);
+		if ($inventoryStore.error == true) {
+			isAlertVisible = true;
+			message = $inventoryStore.message;
+			error = $inventoryStore.error;
+		}
+		showAlert();
+	}
 </script>
 
-{#if isAlertVisible && error}
-	<CustomAlert color="bg-red-300" {message} />
+{#if isAlertVisible && message != null}
+	{#if error}
+		<CustomAlert color="bg-red-300" {message} />
+	{:else}
+		<CustomAlert color="bg-green-300" {message} />
+	{/if}
 {/if}
 
 {#if loading}
@@ -153,12 +167,12 @@
 {:else}
 	<div class="space-y-5">
 		<div class="p-10 flex flex-col">
-			<div class="flex items-center space-x-6">
+			<!-- <div class="flex items-center space-x-6">
 				<Button on:click={openModal} class="bg-blue-500 w-40">
 					<UploadOutline class="w-3.5 h-3.5  mr-2" />
 					Upload Data</Button
 				>
-			</div>
+			</div> -->
 			<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
 				<div>
 					<form

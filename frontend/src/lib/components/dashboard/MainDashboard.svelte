@@ -56,6 +56,7 @@
 
 	onMount(async () => {
 		await HandleData();
+		console.log('is visible on mount', isAlertVisible);
 	});
 
 	async function HandleData() {
@@ -74,14 +75,14 @@
 			weekFigs = $store.data;
 			message = $store.message;
 			error = $store.error;
-			console.log('%', $store);
+			// console.log('%', $store);
 		});
 
 		inventoryStore.subscribe(($store) => {
 			inventories = $store.data;
 			message = $store.message;
 			error = $store.error;
-			console.log('%', $store);
+			// console.log('%', $store);
 		});
 
 		weekFigs.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
@@ -103,12 +104,12 @@
 		});
 
 		cash_value = weekFigs.reduce((acc: any, item: { CASH_AVAILABLE: any; CASH_INLIEN: any }) => {
-			return acc + item.CASH_AVAILABLE + item.CASH_INLIEN;
+			return item.CASH_AVAILABLE + item.CASH_INLIEN;
 		}, 0);
 
 		security_value = weekFigs.reduce(
 			(acc: any, item: { SECURITIES_AVAILABLE: any; SECURITIES_INLIEN: any }) => {
-				return acc + item.SECURITIES_AVAILABLE + item.SECURITIES_INLIEN;
+				return item.SECURITIES_AVAILABLE + item.SECURITIES_INLIEN;
 			},
 			0
 		);
@@ -120,7 +121,7 @@
 			loading = false;
 		}
 
-		showAlert();
+		// showAlert();
 	}
 
 	/** @type {import('svelte/action').Action}  */
@@ -206,6 +207,27 @@
 		}
 	}
 
+	$: {
+		if ($weeklyFigStore.error == true) {
+			isAlertVisible = true;
+			message = $weeklyFigStore.message;
+			error = $weeklyFigStore.error;
+		}
+
+		if ($brokerageIncomeStore.error == true) {
+			isAlertVisible = true;
+			message = $brokerageIncomeStore.message;
+			error = $brokerageIncomeStore.error;
+		}
+
+		if ($inventoryStore.error == true) {
+			isAlertVisible = true;
+			message = $inventoryStore.message;
+			error = $inventoryStore.error;
+		}
+		showAlert();
+	}
+
 	let isAlertVisible = false;
 	let error = false;
 	let message: string | null = null;
@@ -222,8 +244,12 @@
 	}
 </script>
 
-{#if isAlertVisible && error}
-	<CustomAlert color="bg-red-300" {message} />
+{#if isAlertVisible && message != null}
+	{#if error}
+		<CustomAlert color="bg-red-300" {message} />
+	{:else}
+		<CustomAlert color="bg-green-300" {message} />
+	{/if}
 {/if}
 
 {#if $weeklyFigStore.data.length == 0 && $weeklyFigStore.noData == false}

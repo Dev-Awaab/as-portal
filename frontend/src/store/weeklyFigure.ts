@@ -75,11 +75,13 @@ const UploadeWeeeklyFigStore = () => {
 					noData: data.data.data.length > 0 ? false : true
 				});
 			} catch (error: any) {
+				// console.log(error.message)
+				// console.log(error.response.data.error)
 				weeklyFigStore.set({
 					data: [],
 					loading: false,
 					error: true,
-					message: error.response.data.error,
+					message: error.message, //error.response.data.error,
 					success: false,
 					noData: true
 				});
