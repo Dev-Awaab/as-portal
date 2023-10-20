@@ -38,7 +38,7 @@ const BrokerageIncomeStore = () => {
                     data: [],
                     loading: false,
                     error: true,
-                    message: error.response.data.error,
+                    message: error.message,//error.response.data.error,
                     success: false
                 });
             }

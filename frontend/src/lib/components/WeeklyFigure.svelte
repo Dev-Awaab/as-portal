@@ -21,6 +21,8 @@
 	let total: number = 0;
 
 	$: {
+		data = data.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
+
 		total = data
 			?.reduce((acc: number, item: any) => {
 				return acc + item.BUYORDER + item.SELLORDER;
@@ -44,10 +46,6 @@
 				error = $store.error;
 				console.log('%', $store);
 			});
-
-			let sorted = data.sort(
-				(a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime()
-			);
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		} finally {
@@ -78,11 +76,21 @@
 	}
 
 	console.log(data);
+
+	$: {
+		// console.log('=======', $weeklyFigStore.message);
+		if ($weeklyFigStore.error == true) {
+			isAlertVisible = true;
+			message = $weeklyFigStore.message;
+		}
+		showAlert();
+	}
 </script>
 
-{#if isAlertVisible && error}
+{#if isAlertVisible && message != null}
 	<CustomAlert color="bg-red-300" {message} />
 {/if}
+
 {#if loading}
 	<Spinner />
 {:else}

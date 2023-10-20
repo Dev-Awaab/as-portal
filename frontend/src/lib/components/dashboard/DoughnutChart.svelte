@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Doughnut } from 'svelte-chartjs';
+	import { Pie } from 'svelte-chartjs';
 
 	export var chartLabel: any[] = ['Red', 'Green', 'Yellow', 'Grey', 'Dark Grey'];
 	export var chartValues: any[] = [300, 50, 100, 40, 120];
@@ -20,4 +21,5 @@
 	ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 </script>
 
+<!-- <Pie {data} options={{ responsive: true }} /> -->
 <Doughnut {data} options={{ responsive: true }} />

@@ -32,7 +32,8 @@ export const transactionStore = writable({
     loading: false,
     message: null,
     error: false,
-    success: false
+    success: false,
+    noData: false,
 });
 
 const UploadTransactionStore = () => {
@@ -59,7 +60,8 @@ const UploadTransactionStore = () => {
                     loading: false,
                     error: false,
                     message: data.message,
-                    success: true
+                    success: true,
+                    noData: data.data.data.length > 0 ? false : true
                 });
 
                 // await uploadeWeeeklyFigStore.get()
@@ -69,8 +71,9 @@ const UploadTransactionStore = () => {
                     data: [],
                     loading: false,
                     error: true,
-                    message: error.response.data.error,
-                    success: false
+                    message: error.message, //error.response.data.error,
+                    success: false,
+                    noData: true
                 });
             }
         },
@@ -84,7 +87,8 @@ const UploadTransactionStore = () => {
                     loading: false,
                     error: false,
                     message: data.message,
-                    success: true
+                    success: true,
+                    noData: data.data.data.length > 0 ? false : true
                 });
 
             } catch (error: any) {
@@ -92,8 +96,9 @@ const UploadTransactionStore = () => {
                     data: [],
                     loading: false,
                     error: true,
-                    message: error.response.data.error,
-                    success: false
+                    message: error.message,//error.response.data.error,
+                    success: false,
+                    noData: true
                 });
             }
         },

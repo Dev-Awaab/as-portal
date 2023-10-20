@@ -24,6 +24,7 @@
 	let csvData: any = [];
 	let fileName: string;
 	let loading = false;
+	let noData = false;
 
 	let lineChartX: any = [];
 	let lineChartY: any = [];
@@ -54,6 +55,7 @@
 
 	onMount(async () => {
 		await HandleData();
+		console.log('is visible on mount', isAlertVisible);
 	});
 
 	async function HandleData() {
@@ -72,14 +74,14 @@
 			weekFigs = $store.data;
 			message = $store.message;
 			error = $store.error;
-			console.log('%', $store);
+			// console.log('%', $store);
 		});
 
 		inventoryStore.subscribe(($store) => {
 			inventories = $store.data;
 			message = $store.message;
 			error = $store.error;
-			console.log('%', $store);
+			// console.log('%', $store);
 		});
 
 		weekFigs.sort((a: any, b: any) => new Date(a.DATE).getTime() - new Date(b.DATE).getTime());
@@ -101,12 +103,12 @@
 		});
 
 		cash_value = weekFigs.reduce((acc: any, item: { CASH_AVAILABLE: any; CASH_INLIEN: any }) => {
-			return acc + item.CASH_AVAILABLE + item.CASH_INLIEN;
+			return item.CASH_AVAILABLE + item.CASH_INLIEN;
 		}, 0);
 
 		security_value = weekFigs.reduce(
 			(acc: any, item: { SECURITIES_AVAILABLE: any; SECURITIES_INLIEN: any }) => {
-				return acc + item.SECURITIES_AVAILABLE + item.SECURITIES_INLIEN;
+				return item.SECURITIES_AVAILABLE + item.SECURITIES_INLIEN;
 			},
 			0
 		);
@@ -118,7 +120,7 @@
 			loading = false;
 		}
 
-		showAlert();
+		// showAlert();
 	}
 
 	/** @type {import('svelte/action').Action}  */
@@ -145,9 +147,9 @@
 
 					rowObject = HandleData();
 
-					if (weekFigs.length != 0) {
-						loading = false;
-					}
+					// if (weekFigs.length != 0) {
+					loading = false;
+					// }
 				});
 			};
 		}
@@ -215,6 +217,27 @@
 		}
 	}
 
+	$: {
+		if ($weeklyFigStore.error == true) {
+			isAlertVisible = true;
+			message = $weeklyFigStore.message;
+			error = $weeklyFigStore.error;
+		}
+
+		if ($brokerageIncomeStore.error == true) {
+			isAlertVisible = true;
+			message = $brokerageIncomeStore.message;
+			error = $brokerageIncomeStore.error;
+		}
+
+		if ($inventoryStore.error == true) {
+			isAlertVisible = true;
+			message = $inventoryStore.message;
+			error = $inventoryStore.error;
+		}
+		showAlert();
+	}
+
 	let isAlertVisible = false;
 	let error = false;
 	let message: string | null = null;
@@ -231,11 +254,15 @@
 	}
 </script>
 
-{#if isAlertVisible && error}
-	<CustomAlert color="bg-red-300" {message} />
+{#if isAlertVisible && message != null}
+	{#if error}
+		<CustomAlert color="bg-red-300" {message} />
+	{:else}
+		<CustomAlert color="bg-green-300" {message} />
+	{/if}
 {/if}
 
-{#if $weeklyFigStore.data.length == 0}
+{#if $weeklyFigStore.data.length == 0 && $weeklyFigStore.noData == false}
 	<div>
 		<Spinner />
 	</div>
@@ -336,11 +363,66 @@
 			</div>
 		</CustomModal>
 
-		{#if $weeklyFigStore.data.length == 0 && !modal}
+		{#if $weeklyFigStore.data.length == 0}
 			<div class="text-center font-semibold text-gray-600">
 				<p>No data</p>
 				<p>Upload a document to see the Chart</p>
 			</div>
+		{:else}
+			<section class="grid grid-cols-1 md:grid-cols-2 gap-10 p-4">
+				<div class="bg-white rounded shadow">
+					<h2
+						class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
+					>
+						Transaction Volume
+					</h2>
+					{#if weekFigs.length != 0}
+						<div class="p-4">
+							<LineChart chartLabel={lineChartY} chartValues={lineChartX} />
+						</div>
+					{/if}
+				</div>
+				<div class="bg-white rounded shadow">
+					<h2
+						class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
+					>
+						Monthly Brokerage Income
+					</h2>
+					{#if brokerage.length != 0}
+						<div class="p-4">
+							<Bar2Chart chartLabel={brokerageY} chartValues={brokerageX} />
+						</div>
+					{/if}
+				</div>
+				<div class="bg-white rounded shadow">
+					<h2
+						class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
+					>
+						Inventory
+					</h2>
+					{#if inventories.length != 0}
+						<div class="p-4">
+							<DoughnutChart chartLabel={inventoryCommodities} chartValues={inventoryValue} />
+						</div>
+					{/if}
+				</div>
+
+				<div class="bg-white rounded shadow">
+					<h2
+						class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
+					>
+						Portfolio Value
+					</h2>
+					{#if cash_value != 0}
+						<div class="p-4">
+							<Pie2Chart
+								chartLabel={['Cash Value', 'Security Value']}
+								chartValues={[cash_value, security_value]}
+							/>
+						</div>
+					{/if}
+				</div>
+			</section>
 		{/if}
 
 		<section class="grid grid-cols-1 xl:grid-cols-2 gap-10 p-4">

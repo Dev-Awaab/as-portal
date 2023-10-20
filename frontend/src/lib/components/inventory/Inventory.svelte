@@ -110,8 +110,12 @@
 
 		loading = true;
 
-		uploadInventoryStore.upload(csvData);
+		// uploadInventoryStore.upload(csvData);
+		// HandleData();
+
+		uploadInventoryStore.sendFormData(formData);
 		HandleData();
+		console.log(formData);
 
 		modal = false;
 	}
@@ -130,10 +134,32 @@
 	function closeAlert() {
 		isAlertVisible = false;
 	}
+
+	let formData = {
+		COMMODITY: 0,
+		DATE: 'April 28, 2023',
+		VOLUME: 0,
+		VOL_BUY: 0,
+		VOL_SELL: 0
+	};
+
+	$: {
+		// console.log('=======', $inventoryStore.message);
+		if ($inventoryStore.error == true) {
+			isAlertVisible = true;
+			message = $inventoryStore.message;
+			error = $inventoryStore.error;
+		}
+		showAlert();
+	}
 </script>
 
-{#if isAlertVisible && error}
-	<CustomAlert color="bg-red-300" {message} />
+{#if isAlertVisible && message != null}
+	{#if error}
+		<CustomAlert color="bg-red-300" {message} />
+	{:else}
+		<CustomAlert color="bg-green-300" {message} />
+	{/if}
 {/if}
 
 {#if loading}
@@ -141,12 +167,12 @@
 {:else}
 	<div class="space-y-5">
 		<div class="p-10 flex flex-col">
-			<div class="flex items-center space-x-6">
+			<!-- <div class="flex items-center space-x-6">
 				<Button on:click={openModal} class="bg-blue-500 w-40">
 					<UploadOutline class="w-3.5 h-3.5  mr-2" />
 					Upload Data</Button
 				>
-			</div>
+			</div> -->
 			<CustomModal bind:open={modal} onClose={closeModal} title="Upload Your Trading Data">
 				<div>
 					<form
@@ -174,13 +200,47 @@
 						</div> -->
 
 						<div class="w-full">
-							<Label for="first_name" class="mb-2">Commodity’s Inventory Volume</Label>
-							<Input type="text" id="first_name" placeholder="inventory volume" required />
+							<Label for="first_name" class="mb-2">Commodity NAME</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="inventory volume"
+								bind:value={formData.COMMODITY}
+								required
+							/>
 						</div>
 
 						<div class="w-full">
-							<Label for="first_name" class="mb-2">Average Price</Label>
-							<Input type="text" id="first_name" placeholder="average Price" required />
+							<Label for="first_name" class="mb-2">Commodity Inventory Volume</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="0"
+								bind:value={formData.VOLUME}
+								required
+							/>
+						</div>
+
+						<div class="w-full">
+							<Label for="first_name" class="mb-2">Buy Volume</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="0"
+								bind:value={formData.VOL_BUY}
+								required
+							/>
+						</div>
+
+						<div class="w-full">
+							<Label for="first_name" class="mb-2">Sell Volume</Label>
+							<Input
+								type="text"
+								id="first_name"
+								placeholder="0"
+								bind:value={formData.VOL_SELL}
+								required
+							/>
 						</div>
 						<Button type="submit" class="m-5 bg-blue-500 text-white w-full">Submit</Button>
 					</form>
