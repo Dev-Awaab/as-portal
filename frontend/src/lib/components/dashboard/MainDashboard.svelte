@@ -269,12 +269,12 @@
 {:else}
 	<main class="p-10 flex flex-col">
 		<div class="flex items-center space-x-6">
-			<Button on:click={openModal} class="bg-blue-500 w-40">
+			<Button on:click={openModal} class="bg-blue-500 w-auto">
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
 				Upload Weekly Transaction</Button
 			>
 
-			<Button on:click={openAnnualModal} class="bg-blue-500 w-40">
+			<Button on:click={openAnnualModal} class="bg-blue-500 w-auto">
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
 				Upload Annual Information</Button
 			>
@@ -425,59 +425,6 @@
 			</section>
 		{/if}
 
-		<section class="grid grid-cols-1 xl:grid-cols-2 gap-10 p-4">
-			<div class="bg-white rounded shadow">
-				<h2
-					class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
-				>
-					Transaction Volume
-				</h2>
-				{#if weekFigs.length != 0}
-					<div class="p-4">
-						<LineChart chartLabel={lineChartY} chartValues={lineChartX} />
-					</div>
-				{/if}
-			</div>
-			<div class="bg-white rounded shadow">
-				<h2
-					class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
-				>
-					Monthly Brokerage Income
-				</h2>
-				{#if brokerage.length != 0}
-					<div class="p-4">
-						<Bar2Chart chartLabel={brokerageY} chartValues={brokerageX} />
-					</div>
-				{/if}
-			</div>
-			<div class="bg-white rounded shadow">
-				<h2
-					class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
-				>
-					Inventory
-				</h2>
-				{#if inventories.length != 0}
-					<div class="p-4">
-						<DoughnutChart chartLabel={inventoryCommodities} chartValues={inventoryValue} />
-					</div>
-				{/if}
-			</div>
 
-			<div class="bg-white rounded shadow">
-				<h2
-					class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
-				>
-					Portfolio Value
-				</h2>
-				{#if cash_value != 0}
-					<div class="p-4">
-						<Pie2Chart
-							chartLabel={['Cash Value', 'Security Value']}
-							chartValues={[cash_value, security_value]}
-						/>
-					</div>
-				{/if}
-			</div>
-		</section>
 	</main>
 {/if}

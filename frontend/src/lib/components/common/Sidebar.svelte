@@ -69,17 +69,18 @@
 						/>
 					</svelte:fragment>
 				</SidebarItem>
-				<SidebarItem label="Portfolio Values" href="/initial-capital" class="py-5 px-3">
-					<svelte:fragment slot="icon">
-						<UserSolid
-							class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-						/>
-					</svelte:fragment>
-				</SidebarItem> -->
+				 -->
 				<SidebarItem label="Weekly Figures" href="/weekly-figures" class="py-5 px-3">
 					<svelte:fragment slot="icon">
 						<CalendarWeekSolid
 							class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+						/>
+					</svelte:fragment>
+				</SidebarItem>
+				<SidebarItem label="Annual Information" href="/annual-info" class="py-5 px-3">
+					<svelte:fragment slot="icon">
+						<UserSolid
+								class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
 						/>
 					</svelte:fragment>
 				</SidebarItem>
