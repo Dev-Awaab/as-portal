@@ -1,4 +1,10 @@
 <script>
+	import AnnualInfo from '$lib/components/annual_info/AnnualInfo.svelte';
+</script>
+
+<AnnualInfo />
+
+<!-- <script>
     import { Card, Button, Label, Input, Checkbox } from 'flowbite-svelte';
 
     const handleSubmit = () => {
@@ -36,4 +42,4 @@
 
         </form>
     </Card>
-</main>
+</main> -->
