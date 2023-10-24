@@ -11,13 +11,19 @@
 	import { uploadTradesStore, tradeStore } from '../../../store';
 	import { uploadTransactionStore } from '../../../store';
 	import { uploadeWeeeklyFigStore, weeklyFigStore } from '../../../store';
+	import { dropDataStore } from '../../../store';
 	import { BrokerageStore, brokerageIncomeStore } from '../../../store';
 	import { uploadInventoryStore, inventoryStore } from '../../../store';
 	import CustomModal from '../common/CustomModal.svelte';
 	import { Button, Label, Input } from 'flowbite-svelte';
 
 	// import { Line } from 'svelte-chartjs';
-	import { DownloadOutline, ShoppingCartSolid, UploadOutline } from 'flowbite-svelte-icons';
+	import {
+		DownloadOutline,
+		ShoppingCartSolid,
+		UploadOutline,
+		TrashBinOutline
+	} from 'flowbite-svelte-icons';
 	import Spinner from '../Spinner.svelte';
 	import CustomAlert from '$lib/components/common/CustomAlert.svelte';
 
@@ -252,6 +258,12 @@
 	function closeAlert() {
 		isAlertVisible = false;
 	}
+
+	function removeAllData() {
+		dropDataStore.delete();
+		HandleData();
+		showAlert();
+	}
 </script>
 
 {#if isAlertVisible && message != null}
@@ -283,6 +295,10 @@
 			</Button>
 			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.xlsx')}>
 				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
+			</Button>
+
+			<Button class="bg-red-500 w-40" on:click={() => removeAllData()}>
+				<TrashBinOutline class="w-3.5 h-3.5 mr-2 " /> Delete All Data
 			</Button>
 		</div>
 		<CustomModal
@@ -424,7 +440,5 @@
 				</div>
 			</section>
 		{/if}
-
-
 	</main>
 {/if}

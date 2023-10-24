@@ -114,6 +114,30 @@ const UploadInventoryStore = () => {
                     });
             }
         },
+        delete: async (_id: any) => {
+            try {
+                const { data } = await serverInstance.post(`${baseURL}/delete`, { _id: _id });
+
+                inventoryStore.set(
+                    {
+                        data: data.data.data,
+                        loading: false,
+                        error: false,
+                        message: data.message,
+                        success: true
+                    });
+
+            } catch (error: any) {
+                inventoryStore.set(
+                    {
+                        data: [],
+                        loading: false,
+                        error: true,
+                        message: error.message,//error.response.data.error,
+                        success: false
+                    });
+            }
+        },
     }
 };
 

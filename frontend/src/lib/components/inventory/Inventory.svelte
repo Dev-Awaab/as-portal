@@ -8,6 +8,7 @@
 	import Spinner from '../Spinner.svelte';
 	import CustomModal from '../common/CustomModal.svelte';
 	import { uploadInventoryStore, inventoryStore } from '../../../store';
+	import { TrashBinOutline } from 'flowbite-svelte-icons';
 	import * as XLSX from 'xlsx/xlsx.mjs';
 	import CommodityList from './CommodityList.svelte';
 	import CustomAlert from '$lib/components/common/CustomAlert.svelte';

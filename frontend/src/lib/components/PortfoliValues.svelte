@@ -53,12 +53,12 @@
 	$: {
 		if (data) {
 			cash = data.reduce((acc: any, item: { CASH_AVAILABLE: any; CASH_INLIEN: any }) => {
-				return acc + item.CASH_AVAILABLE + item.CASH_INLIEN;
+				return item.CASH_AVAILABLE + item.CASH_INLIEN;
 			}, 0);
 
 			security = data.reduce(
 				(acc: any, item: { SECURITIES_AVAILABLE: any; SECURITIES_INLIEN: any }) => {
-					return acc + item.SECURITIES_AVAILABLE + item.SECURITIES_INLIEN;
+					return item.SECURITIES_AVAILABLE + item.SECURITIES_INLIEN;
 				},
 				0
 			);
@@ -98,8 +98,8 @@
 	<div>
 		<div class="flex items-center py-5 px-3">
 			<Heading tag="h5">Portfolio Summary</Heading>
-<!--			<Heading tag="h6">Cash: {num(cash)}</Heading>-->
-<!--			<Heading tag="h6">Securtiy Value: {num(security)}</Heading>-->
+			<!--			<Heading tag="h6">Cash: {num(cash)}</Heading>-->
+			<!--			<Heading tag="h6">Securtiy Value: {num(security)}</Heading>-->
 			<Heading tag="h6">Portfolio Value: {num(portfolioValue)}</Heading>
 		</div>
 		<Table>
@@ -110,8 +110,8 @@
 					<TableHeadCell class="capitalize">CASH INLIEN</TableHeadCell>
 					<TableHeadCell class="capitalize">SECURITIES AVAILABLE</TableHeadCell>
 					<TableHeadCell class="capitalize">SECURITIES INLIEN</TableHeadCell>
-					<TableHeadCell class="capitalize uppercase">Cash Balance </TableHeadCell>
-					<TableHeadCell class="capitalize uppercase">Securtiy Balance </TableHeadCell>
+					<TableHeadCell class="capitalize uppercase">Cash Balance</TableHeadCell>
+					<TableHeadCell class="capitalize uppercase">Securtiy Balance</TableHeadCell>
 				</tr>
 			</TableHead>
 			<TableBody>
