@@ -209,8 +209,9 @@
 	};
 	async function downloadExcelFile(name: string) {
 		try {
-			const gitHubCdn = 'https://github.com/Dev-Awaab/as-portal/blob/main/frontend/static/';
-			const response = await fetch(`${gitHubCdn}/${name}`); // await fetch(`/static/${name}`); // Replace with the path to your Excel file
+			const driveTemplateLink =
+				'https://docs.google.com/spreadsheets/d/1GbfpfavssH4KOjnxiC8Qxa3UeMy0zhea/edit?usp=sharing&ouid=103896840483361865295&rtpof=true&sd=true';
+			const response = await fetch(`${driveTemplateLink}`); // await fetch(`/static/${name}`); // Replace with the path to your Excel file
 			const blob = await response.blob();
 
 			const url = window.URL.createObjectURL(blob);
