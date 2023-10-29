@@ -209,7 +209,8 @@
 	};
 	async function downloadExcelFile(name: string) {
 		try {
-			const response = await fetch(`/static/${name}`); // Replace with the path to your Excel file
+			const gitHubCdn = 'https://github.com/Dev-Awaab/as-portal/blob/main/frontend/static/';
+			const response = await fetch(`${gitHubCdn}/${name}`); // await fetch(`/static/${name}`); // Replace with the path to your Excel file
 			const blob = await response.blob();
 
 			const url = window.URL.createObjectURL(blob);
