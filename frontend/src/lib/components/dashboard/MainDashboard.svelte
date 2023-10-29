@@ -290,10 +290,10 @@
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
 				Upload Annual Information</Button
 			>
-			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.xlsx')}>
+			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.rar')}>
 				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
 			</Button>
-			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.xlsx')}>
+			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.rar')}>
 				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
 			</Button>
 
