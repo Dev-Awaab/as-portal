@@ -210,8 +210,9 @@
 	async function downloadExcelFile(name: string) {
 		try {
 			const driveTemplateLink =
-				'https://docs.google.com/spreadsheets/d/1GbfpfavssH4KOjnxiC8Qxa3UeMy0zhea/edit?usp=sharing&ouid=103896840483361865295&rtpof=true&sd=true';
+				'https://drive.google.com/uc?export=download&id=1GbfpfavssH4KOjnxiC8Qxa3UeMy0zhea';
 			const response = await fetch(`${driveTemplateLink}`); // await fetch(`/static/${name}`); // Replace with the path to your Excel file
+
 			const blob = await response.blob();
 
 			const url = window.URL.createObjectURL(blob);
@@ -292,12 +293,18 @@
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
 				Upload Annual Information</Button
 			>
-			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Sample template.rar')}>
-				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
-			</Button>
-			<Button class="bg-blue-500 w-40" on:click={() => downloadExcelFile('Template.rar')}>
-				<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
-			</Button>
+
+			<a href="https://drive.google.com/uc?export=download&id=1APWHF-GiJs2aZ0HCuKLu8lBzyH6GEJC1">
+				<Button class="bg-blue-500 w-40">
+					<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Sample
+				</Button>
+			</a>
+
+			<a href="https://drive.google.com/uc?export=download&id=1GbfpfavssH4KOjnxiC8Qxa3UeMy0zhea">
+				<Button class="bg-blue-500 w-40">
+					<DownloadOutline class="w-3.5 h-3.5 mr-2 " /> Template
+				</Button>
+			</a>
 
 			<Button class="bg-red-500 w-40" on:click={() => removeAllData()}>
 				<TrashBinOutline class="w-3.5 h-3.5 mr-2 " /> Delete All Data
