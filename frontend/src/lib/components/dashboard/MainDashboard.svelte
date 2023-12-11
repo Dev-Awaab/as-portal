@@ -46,6 +46,11 @@
 	let cash_value = 0;
 	let security_value = 0;
 
+	$:{
+		   console.log({  cash_value,
+			 security_value})
+	}
+
 	import {
 		Chart as ChartJS,
 		Title,
@@ -56,13 +61,12 @@
 		PointElement,
 		CategoryScale
 	} from 'chart.js';
+	import ProtfolioExpected from './ProtfolioExpected.svelte';
+	import { retrive } from '../../../utils';
 
 	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
 
-	onMount(async () => {
-		await HandleData();
-		console.log('is visible on mount', isAlertVisible);
-	});
+
 
 	async function HandleData() {
 		await uploadeWeeeklyFigStore.get();
@@ -267,6 +271,13 @@
 		HandleData();
 		showAlert();
 	}
+
+	
+
+		onMount(async () => {
+		await HandleData();
+		console.log('is visible on mount', isAlertVisible);
+	});
 </script>
 
 {#if isAlertVisible && message != null}
@@ -444,6 +455,18 @@
 								chartLabel={['Cash Value', 'Security Value']}
 								chartValues={[cash_value, security_value]}
 							/>
+						</div>
+					{/if}
+				</div>
+				<div class="bg-white rounded shadow">
+					<h2
+						class="text-center font-bold bg-blue-500 py-5 text-white uppercase tracking-widest text-xl"
+					>
+						Expected  vs Portfolio
+					</h2>
+					{#if cash_value != 0}
+						<div class="p-4">
+							<ProtfolioExpected  />
 						</div>
 					{/if}
 				</div>

@@ -6,10 +6,10 @@
 	export var chartValues: any[] = [2000000, 1900000, 2500000, 2400000, 1800000, 1700000, 1400000]; // Loan Disbursed in NAIRA
 
 	export let data = {
-		labels: chartLabel, //['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+		labels: chartLabel, 
 		datasets: [
 			{
-				label: 'Loan Disbursed (in NAIRA)',
+				label: 'Transaction Volume',
 				fill: true,
 				lineTension: 0.3,
 				backgroundColor: 'rgba(255, 165, 0, .3)', // Orange color
@@ -27,7 +27,7 @@
 				pointHoverBorderWidth: 2,
 				pointRadius: 1,
 				pointHitRadius: 10,
-				data: chartValues //[2000000, 1900000, 2500000, 2400000, 1800000, 1700000, 1400000] // Loan Disbursed in NAIRA
+				data: chartValues 
 			}
 		]
 	};

@@ -108,10 +108,10 @@
 					<TableHeadCell>Date</TableHeadCell>
 					<TableHeadCell class="capitalize">CASH AVAILABLE</TableHeadCell>
 					<TableHeadCell class="capitalize">CASH INLIEN</TableHeadCell>
-					<TableHeadCell class="capitalize">SECURITIES AVAILABLE</TableHeadCell>
-					<TableHeadCell class="capitalize">SECURITIES INLIEN</TableHeadCell>
-					<TableHeadCell class="capitalize uppercase">Cash Balance</TableHeadCell>
-					<TableHeadCell class="capitalize uppercase">Securtiy Balance</TableHeadCell>
+					<TableHeadCell class="capitalize">SECURITY AVAILABLE</TableHeadCell>
+					<TableHeadCell class="capitalize">SECURITY INLIEN</TableHeadCell>
+					<TableHeadCell class="capitalize ">Cash Balance</TableHeadCell>
+					<TableHeadCell class="capitalize ">Securtiy Balance</TableHeadCell>
 				</tr>
 			</TableHead>
 			<TableBody>
