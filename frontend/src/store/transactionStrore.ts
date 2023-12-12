@@ -46,7 +46,10 @@ const UploadTransactionStore = () => {
         upload: async (csvData: any, formData: any) => {
             try {
 
-                var appData = [...csvData, { formData }]
+
+                csvData = [...csvData]
+
+                var appData = { csvData, formData }//[...csvData, { formData }]
 
                 // console.log("From Before Upload", data);
                 console.log(`${baseURL}/upload`, appData);
