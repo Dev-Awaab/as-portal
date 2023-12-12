@@ -307,10 +307,10 @@
 				Upload Weekly Transaction</Button
 			>
 
-			<Button on:click={openAnnualModal} class="bg-blue-500 w-auto">
+			<!-- <Button on:click={openAnnualModal} class="bg-blue-500 w-auto">
 				<UploadOutline class="w-3.5 h-3.5  mr-2" />
 				Upload Annual Information</Button
-			>
+			> -->
 
 			<a href="https://drive.google.com/uc?export=download&id=1APWHF-GiJs2aZ0HCuKLu8lBzyH6GEJC1">
 				<Button class="bg-blue-500 w-40">
