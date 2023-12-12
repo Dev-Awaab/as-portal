@@ -8,7 +8,6 @@
 	import Spinner from '../Spinner.svelte';
 	import CustomModal from '../common/CustomModal.svelte';
 	import { uploadInventoryStore, inventoryStore } from '../../../store';
-	import { TrashBinOutline } from 'flowbite-svelte-icons';
 	import * as XLSX from 'xlsx/xlsx.mjs';
 	import CommodityList from './CommodityList.svelte';
 	import CustomAlert from '$lib/components/common/CustomAlert.svelte';
@@ -19,6 +18,7 @@
 	let loading = false;
 	let csvData: any = [];
 	let rowObject: any = [];
+	export let showDelete: Boolean = false;
 
 	let modal = false;
 	let showModalData = false;
@@ -252,7 +252,7 @@
 		{#if $inventoryStore.data.length != 0}
 			{#each $inventoryStore.data as item (item)}
 				<!-- {console.log(item)} -->
-				<CommodityList comodityData={item} />
+				<CommodityList comodityData={item} {showDelete} />
 			{/each}
 		{:else}
 			<div class="text-center font-semibold text-gray-600">

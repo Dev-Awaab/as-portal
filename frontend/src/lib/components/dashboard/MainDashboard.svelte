@@ -31,6 +31,7 @@
 	let fileName: string;
 	let loading = false;
 	let noData = false;
+	export let showDelete: Boolean = false;
 
 	let lineChartX: any = [];
 	let lineChartY: any = [];
@@ -323,9 +324,11 @@
 				</Button>
 			</a>
 
-			<Button class="bg-red-500 w-40" on:click={() => OpenDeleteModel()}>
-				<TrashBinOutline class="w-3.5 h-3.5 mr-2 " /> Delete All Data
-			</Button>
+			{#if showDelete}
+				<Button class="bg-red-500 w-40" on:click={() => OpenDeleteModel()}>
+					<TrashBinOutline class="w-3.5 h-3.5 mr-2 " /> Delete All Data
+				</Button>
+			{/if}
 		</div>
 		<CustomModal
 			bind:open={annualModal}

@@ -18,6 +18,7 @@
 
 	let data: any = [];
 	let loading = false;
+	export let showDelete: Boolean = false;
 
 	let total: number = 0;
 
@@ -124,13 +125,15 @@
 						<TableBodyCell>{num(item.SELLORDER)}</TableBodyCell>
 						<TableBodyCell>{num(item.SELLORDER + item.BUYORDER)}</TableBodyCell>
 						<TableBodyCell>
-							<button
-								type="button"
-								class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-								on:click={() => handleDelete(item._id)}
-							>
-								<TrashBinOutline class="w-3.5 h-3.5 mr-2 " />
-							</button>
+							{#if showDelete}
+								<button
+									type="button"
+									class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+									on:click={() => handleDelete(item._id)}
+								>
+									<TrashBinOutline class="w-3.5 h-3.5 mr-2 " />
+								</button>
+							{/if}
 							<!-- {item._id} -->
 						</TableBodyCell>
 					</TableBodyRow>

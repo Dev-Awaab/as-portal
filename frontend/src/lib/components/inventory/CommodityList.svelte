@@ -22,6 +22,7 @@
 	 */
 	// export let comodityName: any;
 	let displayData: any = [];
+	export let showDelete: Boolean = false;
 
 	onMount(async () => {
 		HandleData();
@@ -75,13 +76,15 @@
 <div>
 	<div class="flex items-center py-5 px-3 bg-blue-500 border-b">
 		<Heading tag="h5">{comodityData.COMMODITY}</Heading>
-		<button
-			type="button"
-			class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-			on:click={() => handleDelete(comodityData._id)}
-		>
-			<TrashBinOutline class="w-3.5 h-3.5 mr-2 " />
-		</button>
+		{#if showDelete}
+			<button
+				type="button"
+				class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+				on:click={() => handleDelete(comodityData._id)}
+			>
+				<TrashBinOutline class="w-3.5 h-3.5 mr-2 " />
+			</button>
+		{/if}
 	</div>
 	<Table class="w-full">
 		<TableHead defaultRow={false} class="w-full bg-blue-300">
