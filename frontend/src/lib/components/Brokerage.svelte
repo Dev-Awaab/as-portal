@@ -75,6 +75,8 @@
 			currency: 'NGN'
 		});
 	};
+
+	$: console.log('bf', data);
 </script>
 
 {#if loading}

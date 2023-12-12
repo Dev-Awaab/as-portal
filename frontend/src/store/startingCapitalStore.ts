@@ -75,6 +75,28 @@ const StartingCapitalStore = () => {
                 });
             }
         },
+        getAllCapitalData: async () => {
+            try {
+                const { data } = await serverInstance.get(`${baseURL}/`);
+
+                capitalStore.set({
+                    data: data.data.data,
+                    loading: false,
+                    error: false,
+                    message: data.message,
+                    success: true
+                });
+
+            } catch (error: any) {
+                capitalStore.set({
+                    data: [],
+                    loading: false,
+                    error: true,
+                    message: error.message,// error.response.data.error,
+                    success: false
+                });
+            }
+        },
     }
 };
 
