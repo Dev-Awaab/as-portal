@@ -105,7 +105,6 @@
 
 <Line {data} options={{ responsive: true }} /> -->
 
-
 <!-- <script lang="ts">
   import { Line } from 'svelte-chartjs';
   import {
@@ -167,59 +166,59 @@
 <Line {data} options={{ responsive: true }} /> -->
 
 <script lang="ts">
-  import { Line } from 'svelte-chartjs';
-  import {
-    Chart as ChartJS,
-    Title,
-    Tooltip,
-    Legend,
-    LineElement,
-    LinearScale,
-    PointElement,
-    CategoryScale
-  } from 'chart.js';
-  import { onMount } from 'svelte';
-  import { retrive } from '../../../utils';
+	import { Line } from 'svelte-chartjs';
+	import {
+		Chart as ChartJS,
+		Title,
+		Tooltip,
+		Legend,
+		LineElement,
+		LinearScale,
+		PointElement,
+		CategoryScale
+	} from 'chart.js';
+	import { onMount } from 'svelte';
+	import { retrive } from '../../../utils';
 
-  export let data = {
-    labels: [],
-    datasets: [
-      {
-        label: 'Expected value',
-        fill: true,
-        lineTension: 0.3,
-        backgroundColor: 'rgba(255, 255, 255, .3)',
-        borderColor: 'rgb(255, 140, 0)',
-        data: [], // Placeholder for now
-      },
-      {
-        label: 'Portfolio Value',
-        fill: true,
-        lineTension: 0.3,
-        backgroundColor: 'rgba(0, 0, 255, .3)',
-        borderColor: 'rgb(0, 0, 139)',
-        data: [], // Placeholder for now
-      },
-    ],
-  };
+	export let data = {
+		labels: [],
+		datasets: [
+			{
+				label: 'Expected value',
+				fill: true,
+				lineTension: 0.3,
+				backgroundColor: 'rgba(255, 255, 255, .3)',
+				borderColor: 'rgb(255, 140, 0)',
+				data: [] // Placeholder for now
+			},
+			{
+				label: 'Portfolio Value',
+				fill: true,
+				lineTension: 0.3,
+				backgroundColor: 'rgba(0, 0, 255, .3)',
+				borderColor: 'rgb(0, 0, 139)',
+				data: [] // Placeholder for now
+			}
+		]
+	};
 
-  ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
+	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
 
-  onMount(async () => {
-    const monthlyData = await retrive();
+	onMount(async () => {
+		const monthlyData = await retrive();
 
-    // Extract dates, portfolio values, and performance target from the API response
-    const dates = monthlyData.data.map((entry) => entry.DATE);
-    const portfolioValues = monthlyData.data.map((entry) => entry.PORTFOLIO_VALUE);
-    const expectedValue = monthlyData.performaceTarget;
+		// Extract dates, portfolio values, and performance target from the API response
+		const dates = monthlyData.data.map((entry) => entry.DATE);
+		const portfolioValues = monthlyData.data.map((entry) => entry.PORTFOLIO_VALUE);
+		const expectedValue = monthlyData.expectedValue;
 
-    // Update Svelte data with the extracted values
-    data.labels = dates;
-    data.datasets[0].data = Array(dates.length).fill(expectedValue);
-    data.datasets[1].data = portfolioValues;
+		// Update Svelte data with the extracted values
+		data.labels = dates;
+		data.datasets[0].data = Array(dates.length).fill(expectedValue);
+		data.datasets[1].data = portfolioValues;
 
-    console.log(data); // Move inside onMount block
-  });
+		console.log(data); // Move inside onMount block
+	});
 </script>
 
 <Line {data} options={{ responsive: true }} />

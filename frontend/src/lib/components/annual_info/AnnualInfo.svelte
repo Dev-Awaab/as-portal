@@ -18,7 +18,15 @@
 		e.preventDefault();
 		console.log('Form data:', formData);
 		loading = true;
-		initalCapitalStore.send(formData);
+
+		let annualInfoData = {
+			yearFrom: formData.yearFrom,
+			yearTo: formData.yearTo,
+			initalCapital: formData.initalCapital,
+			targetProfit: targetProfitValue,
+			expectedValue: expectedValue
+		};
+		initalCapitalStore.send(annualInfoData);
 	};
 
 	let data = initalCapitalStore.getCapitalData();
