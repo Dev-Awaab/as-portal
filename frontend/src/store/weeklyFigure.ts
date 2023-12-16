@@ -85,6 +85,42 @@ const UploadeWeeeklyFigStore = () => {
 				});
 			}
 		},
+		getFilterData: async (filterDate: any) => {
+			try {
+
+				const startDate = filterDate.yearFrom;
+				const endDate = filterDate.yearTo;
+
+				console.log('---------', filterDate, startDate, endDate)
+
+				const { data } = await serverInstance.get(`${baseURL}/retrive/${startDate}/${endDate}`);
+
+				console.log("Weekly Fig Data", data);
+
+				// Set loading to true when fetching
+				weeklyFigStore.update((state) => ({ ...state, loading: true }));
+				weeklyFigStore.set({
+					data: data.data.data,
+					loading: false,
+					error: false,
+					message: data.message,
+					success: true,
+					noData: data.data.data.length > 0 ? false : true
+				});
+			} catch (error: any) {
+				// console.log(error.message)
+				// console.log(error.response.data.error)
+				weeklyFigStore.set({
+					data: [],
+					loading: false,
+					error: true,
+					message: error.message, //error.response.data.error,
+					success: false,
+					noData: true
+				});
+			}
+		},
+
 
 		delete: async (_id: string) => {
 			try {

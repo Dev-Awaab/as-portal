@@ -8,5 +8,7 @@ export async function retrive() {
 		`https://trade-accounting-demo.onrender.com/api/transactions/monthfigures`
 	);
 
+	// console.log(data.data)
+
 	return data.data;
 }

@@ -6,7 +6,7 @@
 	export var chartValues: any[] = [2000000, 1900000, 2500000, 2400000, 1800000, 1700000, 1400000]; // Loan Disbursed in NAIRA
 
 	export let data = {
-		labels: chartLabel, 
+		labels: chartLabel,
 		datasets: [
 			{
 				label: 'Transaction Volume',
@@ -27,7 +27,7 @@
 				pointHoverBorderWidth: 2,
 				pointRadius: 1,
 				pointHitRadius: 10,
-				data: chartValues 
+				data: chartValues
 			}
 		]
 	};
@@ -44,6 +44,7 @@
 	} from 'chart.js';
 
 	ChartJS.register(Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale);
+	// console.log(chartLabel);
 </script>
 
 <Line {data} options={{ responsive: true }} />

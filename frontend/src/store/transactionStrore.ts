@@ -4,6 +4,11 @@ import { storable } from './storable';
 import Result from 'postcss/lib/result';
 import { uploadeWeeeklyFigStore } from "./weeklyFigure"
 import { serverInstance } from '../utils/baseUrl';
+import { BrokerageStore } from './brokerageIncomeStore';
+import { uploadInventoryStore } from './inventoryStore';
+// import FormData from 'form-data';
+// const fs = require('fs');
+
 
 // export interface TradeResponse {
 //     trades: Array<TradeType>;
@@ -46,30 +51,85 @@ const UploadTransactionStore = () => {
         upload: async (csvData: any, formData: any) => {
             try {
 
-
-                csvData = [...csvData]
+                // csvData = [...csvData]
 
                 var appData = { csvData, formData }//[...csvData, { formData }]
 
                 // console.log("From Before Upload", data);
-                console.log(`${baseURL}/upload`, appData);
 
-                const { data } = await serverInstance.post(`${baseURL}/upload`, appData);
 
-                // console.log("After Upload Before Upload", data.data);
+                let _formData = new FormData();
+                _formData.append("file", csvData);
 
-                transactionStore.set({
-                    data: data.data.data,
-                    loading: false,
-                    error: false,
-                    message: data.message,
-                    success: true,
-                    noData: data.data.data.length > 0 ? false : true
-                });
+                _formData.append("securities_balance", formData.securities_balance);
+                _formData.append("securities_inLien", formData.securities_inLien);
+                _formData.append("cash_inLien", formData.cash_inLien);
 
-                // await uploadeWeeeklyFigStore.get()
+
+
+
+
+
+                console.log(`${baseURL}/------------`, _formData);
+                console.log(`${baseURL}/upload`, _formData.getAll('csvFile'));
+
+
+                // const { data } = await axios.post(`${baseURL}/upload`, _formData, {
+                //     headers: {
+                //         'Content-Type': 'multipart/form-data'
+                //     }
+                // })
+
+                const url = " http://127.0.0.1:7001/api/transactions/upload"
+                const response = await fetch(`${url}`, {
+                    method: 'POST',
+                    body: _formData,
+                    // headers: {
+                    //     'Content-Type': 'multipart/form-data',
+                    // },
+                })
+
+                const data = await response.json()
+
+                console.log('{{{{{{{{{{{ ', data)
+
+                // const { data } = await serverInstance.post(`${baseURL}/upload`,
+                //     _formData,
+                // );
+
+                console.log("After Upload Before Upload", data.data);
+                console.log("After Upload Before Upload", response);
+
+                if (!response.ok) {
+                    console.log('is not ok......')
+                    transactionStore.set({
+                        data: [],
+                        loading: false,
+                        error: true,
+                        message: data.message, //error.response.data.error,
+                        success: false,
+                        noData: true
+                    });
+
+                } else {
+
+                    transactionStore.set({
+                        data: data.data.data,
+                        loading: false,
+                        error: false,
+                        message: data.message,
+                        success: true,
+                        noData: data.data.data.length > 0 ? false : true
+                    });
+
+                    await uploadeWeeeklyFigStore.get()
+                    await BrokerageStore.get();
+                    await uploadInventoryStore.getAll();
+                }
+
 
             } catch (error: any) {
+                // console.log(error.message)
                 transactionStore.set({
                     data: [],
                     loading: false,
