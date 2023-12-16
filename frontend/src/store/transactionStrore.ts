@@ -80,7 +80,10 @@ const UploadTransactionStore = () => {
                 //     }
                 // })
 
-                const url = " http://127.0.0.1:7001/api/transactions/upload"
+
+
+                const url = `${serverInstance.getUri()}${baseURL}/upload`
+
                 const response = await fetch(`${url}`, {
                     method: 'POST',
                     body: _formData,
