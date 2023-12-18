@@ -120,7 +120,11 @@
 			<TableBody>
 				{#each data as item, index (item._id)}
 					<TableBodyRow key={index}>
-						<TableBodyCell>{moment(item.DATE).format('D, MMM, YYYY')}</TableBodyCell>
+						<TableBodyCell>
+							{`${String(moment(item.DATE).startOf('week').format('D, MMM, YYYY'))} - ${moment(
+								item.DATE
+							).format('D, MMM, YYYY')}`}
+						</TableBodyCell>
 						<TableBodyCell>{num(item.BUYORDER)}</TableBodyCell>
 						<TableBodyCell>{num(item.SELLORDER)}</TableBodyCell>
 						<TableBodyCell>{num(item.SELLORDER + item.BUYORDER)}</TableBodyCell>

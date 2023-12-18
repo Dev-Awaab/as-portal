@@ -113,7 +113,7 @@
 			let endDate = String(moment(element.DATE).format('D, MMM, YYYY'));
 			let startDate = String(moment(element.DATE).startOf('week').format('D, MMM, YYYY'));
 
-			let dateValue = `${startDate} - ${endDate}`;
+			let dateValue = `${endDate}`;
 
 			LweeklfyFigDate.push(dateValue);
 			LweeklfyFigBalance.push(element.CASH_AVAILABLE);
@@ -245,7 +245,7 @@
 				let endDate = String(moment(element.DATE).format('D, MMM, YYYY'));
 				let startDate = String(moment(element.DATE).startOf('week').format('D, MMM, YYYY'));
 
-				let dateValue = `${startDate} - ${endDate}`;
+				let dateValue = `${endDate}`;
 
 				LweeklfyFigDate.push(dateValue);
 				LweeklfyFigBalance.push(element.CASH_AVAILABLE);

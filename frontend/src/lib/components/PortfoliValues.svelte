@@ -117,7 +117,11 @@
 			<TableBody>
 				{#each data as item, index (item._id)}
 					<TableBodyRow key={index}>
-						<TableBodyCell>{moment(num(item.DATE)).format('D, MMM, YYYY')}</TableBodyCell>
+						<TableBodyCell>
+							{`${String(moment(item.DATE).startOf('week').format('D, MMM, YYYY'))} - ${moment(
+								item.DATE
+							).format('D, MMM, YYYY')}`}
+						</TableBodyCell>
 						<TableBodyCell>{num(item.CASH_AVAILABLE)}</TableBodyCell>
 						<TableBodyCell>{num(item.CASH_INLIEN)}</TableBodyCell>
 						<TableBodyCell>{num(item.SECURITIES_AVAILABLE)}</TableBodyCell>
