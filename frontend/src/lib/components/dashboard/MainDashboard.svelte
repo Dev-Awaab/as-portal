@@ -23,7 +23,10 @@
 		DownloadOutline,
 		ShoppingCartSolid,
 		UploadOutline,
-		TrashBinOutline
+		TrashBinOutline,
+		FilterOutline,
+		ChartOutline,
+		ArrowsRepeatOutline
 	} from 'flowbite-svelte-icons';
 	import Spinner from '../Spinner.svelte';
 	import CustomAlert from '$lib/components/common/CustomAlert.svelte';
@@ -355,6 +358,15 @@
 		CloseDeleteModel();
 	}
 
+	import { goto, invalidate } from '$app/navigation';
+	const refreshData = async () => {
+		goto('/');
+		// loading = true;
+		// await GetAllData();
+		// await HandleData();
+		// console.log('refreshing...', isAlertVisible);
+	};
+
 	onMount(async () => {
 		await GetAllData();
 		await HandleData();
@@ -383,9 +395,14 @@
 			>
 
 			<Button on:click={openFilterModal} class="bg-blue-500 w-auto">
-				<UploadOutline class="w-3.5 h-3.5  mr-2" />
+				<ChartOutline class="w-3.5 h-3.5  mr-2" />
 				Filter Date</Button
 			>
+
+			<Button on:click={refreshData} class="bg-blue-500 w-auto">
+				<ArrowsRepeatOutline class="w-3.5 h-3.5  mr-2" />
+				ReFresh Page
+			</Button>
 
 			<a href="https://drive.google.com/uc?export=download&id=1APWHF-GiJs2aZ0HCuKLu8lBzyH6GEJC1">
 				<Button class="bg-blue-500 w-40">
